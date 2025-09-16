@@ -1,0 +1,61 @@
+services:
+  rbt-ticketing-system:
+    build: .
+    container_name: rbt-ticketing-system
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env.docker
+    depends_on:
+      - postgres
+      - kafka
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres-ticketing
+    env_file:
+      - .env.docker
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: kafka-ticketing
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+    env_file:
+      - .env.docker
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8081:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+    depends_on:
+      - kafka
+    networks:
+      - app-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
