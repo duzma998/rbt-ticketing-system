@@ -1,4 +1,4 @@
-package com.nikolastojanovic.rbtticketingsystem.application.web.controller;
+package com.nikolastojanovic.rbtticketingsystem.application.controller.rest;
 
 import com.nikolastojanovic.rbtticketingsystem.application.service.TicketService;
 import lombok.RequiredArgsConstructor;
