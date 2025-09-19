@@ -1,5 +1,6 @@
 package com.nikolastojanovic.rbtticketingsystem.infrastructure.config;
 
+import com.nikolastojanovic.rbtticketingsystem.infrastructure.security.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,40 +22,32 @@ import com.nikolastojanovic.rbtticketingsystem.infrastructure.security.UserDetai
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-  private final CustomCorsConfiguration customCorsConfiguration;
-  private final UserDetailsServiceImpl userDetailsService;
-  private final JwtAuthFilter jwtAuthFilter;
+    private final CustomCorsConfiguration customCorsConfiguration;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final JwtAuthFilter jwtAuthFilter;
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity,
-      AuthenticationManager authenticationManager) throws Exception {
-    return httpSecurity
-        .csrf(AbstractHttpConfigurer::disable)
-        .cors(c -> c.configurationSource(customCorsConfiguration))
-        .sessionManagement(
-            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//        Set permissions on endpoints
-        .authorizeHttpRequests(auth -> auth
-//            our public endpoints
-            .requestMatchers(HttpMethod.POST, "/api/v1/user/login").permitAll()
-            .requestMatchers(HttpMethod.GET, "/api/v1/events").permitAll()
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(c -> c.configurationSource(customCorsConfiguration))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users/login", "/api/v1/users/signup").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/events").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint));
 
-//            our private
-            .requestMatchers("/api/v1/example").hasRole("ADMIN")
-            .anyRequest().authenticated())
-        .authenticationManager(authenticationManager)
+        return http.build();
+    }
 
-//        We need jwt filter before the UsernamePasswordAuthenticationFilter.
-//        Since we need every request to be authenticated before going through spring security filter.
-//        (UsernamePasswordAuthenticationFilter creates a UsernamePasswordAuthenticationToken from a username and password that are submitted in the HttpServletRequest.)
-        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-        .build();
-  }
-
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
   @Bean
   public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {

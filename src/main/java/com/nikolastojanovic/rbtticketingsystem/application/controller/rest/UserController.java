@@ -22,7 +22,9 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid ApplicationLoginRequest loginRequest) {
-        return ResponseEntity.ok(userService.login(loginRequest));
+        System.out.println(loginRequest);
+        var token = userService.login(loginRequest);
+        return ResponseEntity.ok(token);
     }
 
     @PostMapping("/signup")

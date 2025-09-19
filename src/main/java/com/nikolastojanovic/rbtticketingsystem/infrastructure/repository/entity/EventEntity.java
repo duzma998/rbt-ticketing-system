@@ -52,23 +52,23 @@ public class EventEntity {
     @Column(name = "total_tickets", nullable = false)
     @NotNull(message = "Total tickets is required")
     @Positive(message = "Total tickets must be positive")
-    Long totalTickets;
+    Integer totalTickets;
 
     @Column(name = "available_tickets", nullable = false)
     @NotNull(message = "Available tickets is required")
     @PositiveOrZero(message = "Available tickets must be zero or positive")
-    Long availableTickets;
+    Integer availableTickets;
 
     @Column(name = "max_tickets_per_purchase", nullable = false)
     @NotNull(message = "Max tickets per purchase is required")
     @Positive(message = "Max tickets per purchase must be positive")
     @Builder.Default
-    Long maxTicketsPerPurchase = 10L;
+    Integer maxTicketsPerPurchase = 10;
 
-    @Column(name = "ticket_price", nullable = false, precision = 10, scale = 2)
+    @Column(name = "ticket_price", nullable = false)
     @NotNull(message = "Ticket price is required")
     @DecimalMin(value = "0.0", inclusive = true, message = "Ticket price must be zero or positive")
-    BigDecimal ticketPrice;
+    Double ticketPrice;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)
@@ -99,22 +99,22 @@ public class EventEntity {
         updatedAt = ZonedDateTime.now();
     }
 
-    public boolean hasAvailableTickets(Long requestedTickets) {
+    public boolean hasAvailableTickets(Integer requestedTickets) {
         return availableTickets >= requestedTickets;
     }
 
-    public boolean isWithinPurchaseLimit(Long requestedTickets) {
+    public boolean isWithinPurchaseLimit(Integer requestedTickets) {
         return requestedTickets <= maxTicketsPerPurchase;
     }
 
-    public void reserveTickets(Long ticketCount) {
+    public void reserveTickets(Integer ticketCount) {
         if (!hasAvailableTickets(ticketCount)) {
             throw new IllegalStateException("Not enough available tickets");
         }
         availableTickets -= ticketCount;
     }
 
-    public void releaseTickets(Long ticketCount) {
+    public void releaseTickets(Integer ticketCount) {
         availableTickets = Math.min(totalTickets, availableTickets + ticketCount);
     }
 }

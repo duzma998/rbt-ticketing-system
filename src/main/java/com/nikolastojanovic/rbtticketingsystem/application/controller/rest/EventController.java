@@ -1,8 +1,10 @@
 package com.nikolastojanovic.rbtticketingsystem.application.controller.rest;
 
+import com.nikolastojanovic.rbtticketingsystem.application.model.request.ApplicationEventRequest;
 import com.nikolastojanovic.rbtticketingsystem.application.model.response.EventResponse;
 import com.nikolastojanovic.rbtticketingsystem.application.service.ApplicationEventService;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.common.PageResult;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,11 +27,37 @@ public class EventController {
     public ResponseEntity<PageResult<EventResponse>> getPublicEvents(
             @RequestParam(defaultValue = "0") @Min(0) int page,
             @RequestParam(defaultValue = "20") @Min(1) int size) {
-        
-        log.info("Fetching public events - page: {}, size: {}", page, size);
 
         var events = applicationEventService.getEvents(page, size);
 
         return ResponseEntity.ok(events);
+    }
+
+    @PostMapping
+    public ResponseEntity<EventResponse> createEvent(@RequestBody @NonNull ApplicationEventRequest eventRequest) {
+        var event = applicationEventService.createEvent(eventRequest);
+        return ResponseEntity.ok(event);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EventResponse> getEventById(@PathVariable @NonNull Long id) {
+
+        var event = applicationEventService.getEventById(id);
+
+        return ResponseEntity.ok(event);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<EventResponse> deleteEvent(@PathVariable @NonNull Long id) {
+        applicationEventService.deleteEvent(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<EventResponse> updateEvent(@RequestBody @NonNull ApplicationEventRequest eventRequest, @PathVariable @NonNull Long id) {
+        var event = applicationEventService.updateEvent( id, eventRequest);
+
+        return ResponseEntity.ok(event);
     }
 }

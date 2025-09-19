@@ -3,6 +3,7 @@ package com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.mapper
 import com.nikolastojanovic.rbtticketingsystem.domain.model.User;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.UserRole;
 import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.entity.UserEntity;
+import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.enums.InfraUserRole;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
 
@@ -24,15 +25,20 @@ public class UserRepositoryMapper {
     }
 
     public UserEntity toEntity(@NotNull User user) {
+
         return new UserEntity(
+                user.Id(),
                 user.username(),
-                user.password(),
                 user.email(),
+                user.password(),
                 user.firstName(),
                 user.lastName(),
-                UserRole.valueOf(user.role()),
+                InfraUserRole.valueOf(user.role().name()),
                 user.updatedAt(),
-                user.createdAt()
+                user.createdAt(),
+                null,
+                null,
+                null
         );
     }
 }

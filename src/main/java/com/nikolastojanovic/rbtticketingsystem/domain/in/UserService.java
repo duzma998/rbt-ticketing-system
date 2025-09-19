@@ -11,4 +11,6 @@ public interface UserService {
     LoginResponse login(@NonNull LoginRequest request);
 
     User signUp(@NonNull SignUpRequest request);
+
+    User getUserByUsername(@NonNull String username);
 }

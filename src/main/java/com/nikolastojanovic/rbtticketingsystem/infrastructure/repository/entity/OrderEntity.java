@@ -38,12 +38,12 @@ public class OrderEntity {
     @Column(name = "ticket_count", nullable = false)
     @NotNull(message = "Ticket count is required")
     @Positive(message = "Ticket count must be positive")
-    Long ticketCount;
+    Integer ticketCount;
 
-    @Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
+    @Column(name = "total_amount", nullable = false)
     @NotNull(message = "Total amount is required")
     @DecimalMin(value = "0.0", inclusive = true, message = "Total amount must be zero or positive")
-    BigDecimal totalAmount;
+    Double totalAmount;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)

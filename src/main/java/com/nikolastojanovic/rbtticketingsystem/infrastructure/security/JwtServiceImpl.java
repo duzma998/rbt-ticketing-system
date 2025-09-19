@@ -3,7 +3,6 @@ package com.nikolastojanovic.rbtticketingsystem.infrastructure.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -24,13 +23,13 @@ public class JwtServiceImpl {
 
   private final JwtProperties jwtProperties;
 
-  public String generateToken(String usrname) {
+  public String generateToken(String username) {
     var now = Instant.now();
     return Jwts.builder()
-        .subject(usrname)
+        .subject(username)
         .issuedAt(Date.from(now))
         .expiration(Date.from(now.plus(jwtProperties.getExpiration(), ChronoUnit.MINUTES)))
-        .signWith(getSignKey(), SignatureAlgorithm.HS256)
+        .signWith(getSignKey())
         .compact();
   }
 

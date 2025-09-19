@@ -1,12 +1,11 @@
-package com.nikolastojanovic.rbtticketingsystem.application.model.response;
+package com.nikolastojanovic.rbtticketingsystem.domain.model.request;
 
 import com.nikolastojanovic.rbtticketingsystem.domain.model.User;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.EventStatus;
 
 import java.time.ZonedDateTime;
 
-public record EventResponse(
-        Long id,
+public record EventRequest(
         String name,
         String description,
         String eventType,
@@ -21,5 +20,7 @@ public record EventResponse(
         String createdBy,
         ZonedDateTime createdAt,
         ZonedDateTime updatedAt,
-        User creator) {
+        String creator
+) {
+
 }

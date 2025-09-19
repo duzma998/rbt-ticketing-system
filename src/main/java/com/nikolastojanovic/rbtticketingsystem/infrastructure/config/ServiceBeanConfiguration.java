@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ServiceBinConfiguration {
+public class ServiceBeanConfiguration {
 
     @Bean
     public UserService userService(UserRepository userRepository, AuthenticationService authenticationService) {
@@ -19,7 +19,7 @@ public class ServiceBinConfiguration {
     }
 
     @Bean
-    public EventService eventService(EventRepository eventRepository) {
-        return new DomainEventService(eventRepository);
+    public EventService eventService(EventRepository eventRepository, UserService userService) {
+        return new DomainEventService(eventRepository,userService );
     }
 }

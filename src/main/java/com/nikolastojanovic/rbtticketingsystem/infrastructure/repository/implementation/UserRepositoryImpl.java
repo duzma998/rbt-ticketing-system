@@ -1,9 +1,8 @@
 package com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.implementation;
 
 import com.nikolastojanovic.rbtticketingsystem.domain.model.User;
-import com.nikolastojanovic.rbtticketingsystem.domain.model.common.Page;
-import com.nikolastojanovic.rbtticketingsystem.domain.model.common.PageResult;
 import com.nikolastojanovic.rbtticketingsystem.domain.out.repository.UserRepository;
+import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.entity.UserEntity;
 import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.jpa.UserRepositoryJpa;
 import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.mapper.UserRepositoryMapper;
 import lombok.NonNull;
@@ -31,6 +30,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User save(@NonNull User user) {
-        return userRepositoryJpa.save(userMapper::toEntity)
+        UserEntity userEntity =  userRepositoryJpa.save(userMapper.toEntity(user));
+        return userMapper.toDomain(userEntity);
     }
 }

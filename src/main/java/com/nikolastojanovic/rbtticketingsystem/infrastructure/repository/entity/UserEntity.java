@@ -1,5 +1,6 @@
 package com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.entity;
 
+import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.UserRole;
 import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.enums.InfraUserRole;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

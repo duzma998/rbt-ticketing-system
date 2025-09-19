@@ -1,10 +1,12 @@
 package com.nikolastojanovic.rbtticketingsystem.domain.model;
 
 import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.EventStatus;
+import lombok.Builder;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
+@Builder
 public record Event(
     Long id,
     String name,
@@ -13,12 +15,12 @@ public record Event(
     String venueName,
     String venueAddress,
     ZonedDateTime eventDate,
-    Long totalTickets,
-    Long availableTickets,
-    Long maxTicketsPerPurchase,
-    BigDecimal ticketPrice,
+    Integer totalTickets,
+    Integer availableTickets,
+    Integer maxTicketsPerPurchase,
+    Double ticketPrice,
     EventStatus status,
-    Long createdBy,
+    String createdBy,
     ZonedDateTime createdAt,
     ZonedDateTime updatedAt,
     User creator

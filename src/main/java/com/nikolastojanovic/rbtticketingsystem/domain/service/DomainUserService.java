@@ -39,7 +39,14 @@ public class DomainUserService implements UserService {
                 .role(UserRole.USER)
                 .password(authenticationService.encodePassword(request.password()))
                 .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
         return userRepository.save(user);
+    }
+
+    @Override
+    public User getUserByUsername(@NonNull String username) {
+        return userRepository.getByUsername(username)
+                .orElseThrow(() -> new CustomException(Error.NOT_FOUND, "User not found"));
     }
 }
