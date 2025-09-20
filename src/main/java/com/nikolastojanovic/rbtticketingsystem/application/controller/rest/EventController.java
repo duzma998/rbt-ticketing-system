@@ -9,10 +9,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.constraints.Min;
+
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/events")
@@ -34,8 +37,8 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<EventResponse> createEvent(@RequestBody @NonNull ApplicationEventRequest eventRequest) {
-        var event = applicationEventService.createEvent(eventRequest);
+    public ResponseEntity<EventResponse> createEvent(@RequestBody @NonNull ApplicationEventRequest eventRequest, @AuthenticationPrincipal Principal principal) {
+        var event = applicationEventService.createEvent(eventRequest, principal);
         return ResponseEntity.ok(event);
     }
 
@@ -55,8 +58,8 @@ public class EventController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<EventResponse> updateEvent(@RequestBody @NonNull ApplicationEventRequest eventRequest, @PathVariable @NonNull Long id) {
-        var event = applicationEventService.updateEvent( id, eventRequest);
+    public ResponseEntity<EventResponse> updateEvent(@RequestBody @NonNull ApplicationEventRequest eventRequest, @PathVariable @NonNull Long id, @AuthenticationPrincipal Principal principal) {
+        var event = applicationEventService.updateEvent( id, eventRequest, principal);
 
         return ResponseEntity.ok(event);
     }

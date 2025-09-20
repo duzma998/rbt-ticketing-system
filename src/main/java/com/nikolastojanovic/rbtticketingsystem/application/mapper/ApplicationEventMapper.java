@@ -6,6 +6,8 @@ import com.nikolastojanovic.rbtticketingsystem.domain.model.Event;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.request.EventRequest;
 import org.springframework.stereotype.Component;
 
+import java.security.Principal;
+
 @Component
 public class ApplicationEventMapper {
 
@@ -31,7 +33,7 @@ public class ApplicationEventMapper {
     }
 
 
-    public EventRequest toDomain(ApplicationEventRequest applicationEventRequest) {
+    public EventRequest toDomain(ApplicationEventRequest applicationEventRequest, Principal principal) {
         return new EventRequest(
                 applicationEventRequest.name(),
                 applicationEventRequest.description(),
@@ -44,10 +46,9 @@ public class ApplicationEventMapper {
                 applicationEventRequest.maxTicketsPerPurchase(),
                 applicationEventRequest.ticketPrice(),
                 applicationEventRequest.status(),
-                applicationEventRequest.createdBy(),
+                principal.getName(),
                 applicationEventRequest.createdAt(),
-                applicationEventRequest.updatedAt(),
-                applicationEventRequest.createdBy()
+                applicationEventRequest.updatedAt()
         );
     }
 }

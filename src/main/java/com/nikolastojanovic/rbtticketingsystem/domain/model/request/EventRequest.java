@@ -17,10 +17,9 @@ public record EventRequest(
         Integer maxTicketsPerPurchase,
         Double ticketPrice,
         EventStatus status,
-        String createdBy,
+        String username,
         ZonedDateTime createdAt,
-        ZonedDateTime updatedAt,
-        String creator
+        ZonedDateTime updatedAt
 ) {
 
 }

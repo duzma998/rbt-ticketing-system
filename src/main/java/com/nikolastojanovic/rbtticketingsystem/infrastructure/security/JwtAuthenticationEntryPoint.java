@@ -24,4 +24,5 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         var body = Map.of("error", "Unauthorized - invalid credentials");
         response.getWriter().write(objectMapper.writeValueAsString(body));
     }
+//    todo ako nema putanje da vratim not found
 }

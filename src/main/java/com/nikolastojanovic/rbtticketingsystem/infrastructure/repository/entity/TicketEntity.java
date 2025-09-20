@@ -47,7 +47,7 @@ public class TicketEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)
     @Builder.Default
-    InfraTicketStatus status = InfraTicketStatus.VALID;
+    InfraTicketStatus status = InfraTicketStatus.CREATED;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @Builder.Default
@@ -61,32 +61,4 @@ public class TicketEntity {
         updatedAt = ZonedDateTime.now();
     }
 
-    // Business logic methods
-    public void cancel() {
-        if (status != InfraTicketStatus.VALID) {
-            throw new IllegalStateException("Only valid tickets can be cancelled");
-        }
-        status = InfraTicketStatus.CANCELLED;
-    }
-
-    public void use() {
-        if (status != InfraTicketStatus.VALID) {
-            throw new IllegalStateException("Only valid tickets can be used");
-        }
-        status = InfraTicketStatus.USED;
-    }
-
-    public void expire() {
-        if (status == InfraTicketStatus.VALID) {
-            status = InfraTicketStatus.EXPIRED;
-        }
-    }
-
-    public boolean isValid() {
-        return status == InfraTicketStatus.VALID;
-    }
-
-    public boolean isExpiredEvent() {
-        return event.getEventDate().isBefore(ZonedDateTime.now());
-    }
 }

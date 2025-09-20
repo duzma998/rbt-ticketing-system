@@ -1,17 +1,17 @@
 package com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.implementation;
 
+import com.nikolastojanovic.rbtticketingsystem.domain.exception.CustomException;
+import com.nikolastojanovic.rbtticketingsystem.domain.exception.Error;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.Event;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.common.Page;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.common.PageResult;
 import com.nikolastojanovic.rbtticketingsystem.domain.out.repository.EventRepository;
-import com.nikolastojanovic.rbtticketingsystem.domain.out.repository.UserRepository;
 import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.jpa.EventRepositoryJpa;
 import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.jpa.UserRepositoryJpa;
 import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.mapper.EventRepositoryMapper;
 
 import static com.nikolastojanovic.rbtticketingsystem.infrastructure.util.PageUtil.toPageResult;
 
-import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.mapper.UserRepositoryMapper;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -43,8 +43,8 @@ public class EventRepositoryImpl implements EventRepository {
 
     @Override
     public Event saveEvent(@NonNull Event event) {
-        var creatorEntity = userRepositoryJpa.findByUsername(event.createdBy());
-        var eventEntity = eventMapper.toEntity(event, creatorEntity.get());
+        var creatorEntity = userRepositoryJpa.findById(event.creatorId()).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "Creator not found."));
+        var eventEntity = eventMapper.toEntity(event, creatorEntity);
         var savedEntity = eventRepositoryJpa.save(eventEntity);
         return eventMapper.toDomain(savedEntity);
     }
@@ -57,9 +57,9 @@ public class EventRepositoryImpl implements EventRepository {
     @Override
     public Event updateEvent(@NonNull Event event) {
 
-        var creatorEntity = userRepositoryJpa.findByUsername(event.createdBy());
+        var creatorEntity = userRepositoryJpa.findById(event.creatorId()).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "Creator not found."));
 
-        var eventEntity = eventMapper.toEntity(event, creatorEntity.get());
+        var eventEntity = eventMapper.toEntity(event, creatorEntity);
         var updatedEntity = eventRepositoryJpa.save(eventEntity);
         return eventMapper.toDomain(updatedEntity);
     }

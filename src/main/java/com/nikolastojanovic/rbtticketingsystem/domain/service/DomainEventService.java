@@ -1,6 +1,7 @@
 package com.nikolastojanovic.rbtticketingsystem.domain.service;
 
 import com.nikolastojanovic.rbtticketingsystem.domain.in.EventService;
+import com.nikolastojanovic.rbtticketingsystem.domain.in.TicketService;
 import com.nikolastojanovic.rbtticketingsystem.domain.in.UserService;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.Event;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.common.Page;
@@ -17,6 +18,7 @@ public class DomainEventService implements EventService {
 
     private final EventRepository eventRepository;
     private final UserService userService;
+    private final TicketService ticketService;
 
 
     @Override
@@ -34,7 +36,7 @@ public class DomainEventService implements EventService {
     @Override
     public Event createEvent(@NonNull EventRequest event) {
 
-        var creator = userService.getUserByUsername(event.creator());
+        var creator = userService.getUserByUsername(event.username());
 
         var saveEvent = Event.builder()
                 .name(event.name())
@@ -48,13 +50,15 @@ public class DomainEventService implements EventService {
                 .maxTicketsPerPurchase(event.maxTicketsPerPurchase())
                 .ticketPrice(event.ticketPrice())
                 .status(event.status())
-                .createdBy(event.createdBy())
+                .createdBy(event.username())
                 .createdAt(event.createdAt())
                 .updatedAt(event.updatedAt())
-                .creator(creator)
+                .creatorId(creator.Id())
                 .build();
 
-        return eventRepository.saveEvent(saveEvent);
+        var savedEvent =  eventRepository.saveEvent(saveEvent);
+        ticketService.initializeTicketsForEvent(savedEvent);
+        return savedEvent;
     }
 
     @Override
@@ -77,7 +81,7 @@ public class DomainEventService implements EventService {
                 .createdBy(eventEntity.createdBy())
                 .createdAt(eventEntity.createdAt())
                 .updatedAt(eventEntity.updatedAt())
-                .creator(eventEntity.creator())
+                .creatorId(eventEntity.creatorId())
                 .build();
 
         return eventRepository.updateEvent(patchedEvent);

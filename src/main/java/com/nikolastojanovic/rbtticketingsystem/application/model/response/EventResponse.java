@@ -21,5 +21,6 @@ public record EventResponse(
         String createdBy,
         ZonedDateTime createdAt,
         ZonedDateTime updatedAt,
-        User creator) {
+        User creator
+) {
 }

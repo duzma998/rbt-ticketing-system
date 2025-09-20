@@ -1,11 +1,17 @@
 package com.nikolastojanovic.rbtticketingsystem.infrastructure.config;
 
 import com.nikolastojanovic.rbtticketingsystem.domain.in.EventService;
+import com.nikolastojanovic.rbtticketingsystem.domain.in.OrderService;
+import com.nikolastojanovic.rbtticketingsystem.domain.in.TicketService;
 import com.nikolastojanovic.rbtticketingsystem.domain.in.UserService;
 import com.nikolastojanovic.rbtticketingsystem.domain.out.repository.EventRepository;
+import com.nikolastojanovic.rbtticketingsystem.domain.out.repository.OrderRepository;
+import com.nikolastojanovic.rbtticketingsystem.domain.out.repository.TicketRepository;
 import com.nikolastojanovic.rbtticketingsystem.domain.out.repository.UserRepository;
 import com.nikolastojanovic.rbtticketingsystem.domain.out.service.AuthenticationService;
 import com.nikolastojanovic.rbtticketingsystem.domain.service.DomainEventService;
+import com.nikolastojanovic.rbtticketingsystem.domain.service.DomainOrderService;
+import com.nikolastojanovic.rbtticketingsystem.domain.service.DomainTicketService;
 import com.nikolastojanovic.rbtticketingsystem.domain.service.DomainUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +25,17 @@ public class ServiceBeanConfiguration {
     }
 
     @Bean
-    public EventService eventService(EventRepository eventRepository, UserService userService) {
-        return new DomainEventService(eventRepository,userService );
+    public EventService eventService(EventRepository eventRepository, UserService userService, TicketService ticketService) {
+        return new DomainEventService(eventRepository, userService, ticketService);
+    }
+
+    @Bean
+    public TicketService ticketService(TicketRepository ticketRepository) {
+        return new DomainTicketService(ticketRepository);
+    }
+
+    @Bean
+    public OrderService orderService(OrderRepository orderRepository, TicketService ticketService, EventRepository eventRepository, UserRepository userRepository) {
+        return new DomainOrderService(userRepository, eventRepository, orderRepository, ticketService);
     }
 }

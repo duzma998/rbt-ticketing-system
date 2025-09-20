@@ -16,9 +16,7 @@ public record ApplicationEventRequest(
         Integer maxTicketsPerPurchase,
         Double ticketPrice,
         EventStatus status,
-        String createdBy,
         ZonedDateTime createdAt,
-        ZonedDateTime updatedAt,
-        String User
+        ZonedDateTime updatedAt
 ) {
 }

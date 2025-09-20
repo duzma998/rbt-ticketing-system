@@ -23,6 +23,6 @@ public record Event(
     String createdBy,
     ZonedDateTime createdAt,
     ZonedDateTime updatedAt,
-    User creator
+    Long creatorId
 ) {
 }

@@ -99,22 +99,4 @@ public class EventEntity {
         updatedAt = ZonedDateTime.now();
     }
 
-    public boolean hasAvailableTickets(Integer requestedTickets) {
-        return availableTickets >= requestedTickets;
-    }
-
-    public boolean isWithinPurchaseLimit(Integer requestedTickets) {
-        return requestedTickets <= maxTicketsPerPurchase;
-    }
-
-    public void reserveTickets(Integer ticketCount) {
-        if (!hasAvailableTickets(ticketCount)) {
-            throw new IllegalStateException("Not enough available tickets");
-        }
-        availableTickets -= ticketCount;
-    }
-
-    public void releaseTickets(Integer ticketCount) {
-        availableTickets = Math.min(totalTickets, availableTickets + ticketCount);
-    }
 }

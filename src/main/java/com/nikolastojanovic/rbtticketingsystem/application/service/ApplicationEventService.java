@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
+
 import static com.nikolastojanovic.rbtticketingsystem.infrastructure.util.PageUtil.toPageResult;
 
 @RequiredArgsConstructor
@@ -36,15 +38,15 @@ public class ApplicationEventService {
     }
 
     @Transactional
-    public EventResponse createEvent(@NonNull ApplicationEventRequest eventRequest) {
-        var event = eventMapper.toDomain(eventRequest);
+    public EventResponse createEvent(@NonNull ApplicationEventRequest eventRequest, Principal principal) {
+        var event = eventMapper.toDomain(eventRequest, principal);
         var savedEvent = eventService.createEvent(event);
         return eventMapper.toResponse(savedEvent);
     }
 
     @Transactional
-    public EventResponse updateEvent(@NonNull Long id, @NonNull ApplicationEventRequest eventRequest) {
-        var event = eventMapper.toDomain(eventRequest);
+    public EventResponse updateEvent(@NonNull Long id, @NonNull ApplicationEventRequest eventRequest, Principal principal) {
+        var event = eventMapper.toDomain(eventRequest, principal);
         var updatedEvent = eventService.updateEvent(id, event);
         return eventMapper.toResponse(updatedEvent);
     }

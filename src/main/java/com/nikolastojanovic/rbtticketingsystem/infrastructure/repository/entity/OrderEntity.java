@@ -55,9 +55,6 @@ public class OrderEntity {
     @Builder.Default
     InfraOrderMethod orderMethod = InfraOrderMethod.API;
 
-    @Column(name = "transaction_id")
-    String transactionId;
-
     @Column(name = "created_at", nullable = false, updatable = false)
     @Builder.Default
     ZonedDateTime createdAt = ZonedDateTime.now();
@@ -73,15 +70,4 @@ public class OrderEntity {
         updatedAt = ZonedDateTime.now();
     }
 
-    public void cancel() {
-        if (status != InfraOrderStatus.ACTIVE) {
-            throw new IllegalStateException("Only active orders can be cancelled");
-        }
-        status = InfraOrderStatus.CANCELLED;
-        event.releaseTickets(ticketCount);
-    }
-
-    public boolean isActive() {
-        return status == InfraOrderStatus.ACTIVE;
-    }
 }
