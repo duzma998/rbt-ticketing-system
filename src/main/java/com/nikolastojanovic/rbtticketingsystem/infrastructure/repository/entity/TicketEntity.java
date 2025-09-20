@@ -23,8 +23,7 @@ public class TicketEntity {
     Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
-    @NotNull(message = "Order is required")
+    @JoinColumn(name = "order_id")
     OrderEntity order;
 
     @ManyToOne(fetch = FetchType.LAZY)

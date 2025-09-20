@@ -11,7 +11,7 @@ public interface TicketRepository {
 
     Optional<Ticket> getByEvetIdAndSeat(@NonNull Long eventId, @NonNull String seatNumber);
 
-    Optional<Ticket> getByEvetId(@NonNull Long eventId);
+    List<Ticket> getByEvetId(@NonNull Long eventId);
 
     void saveTicket(@NonNull Ticket updatedTicket);
 }

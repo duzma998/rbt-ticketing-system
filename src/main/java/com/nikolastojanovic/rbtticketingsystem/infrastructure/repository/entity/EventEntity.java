@@ -76,6 +76,7 @@ public class EventEntity {
     InfraEventStatus status = InfraEventStatus.ACTIVE;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     @JoinColumn(name = "created_by", nullable = false)
     @NotNull(message = "Created by is required")
     UserEntity createdBy;
@@ -87,15 +88,23 @@ public class EventEntity {
     @Column(name = "updated_at")
     ZonedDateTime updatedAt;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<OrderEntity
             > orders;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<TicketEntity> tickets;
 
     @PreUpdate
     protected void onUpdate() {
+        updatedAt = ZonedDateTime.now();
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = ZonedDateTime.now();
         updatedAt = ZonedDateTime.now();
     }
 

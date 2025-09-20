@@ -72,4 +72,5 @@ public class UserEntity {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
 }

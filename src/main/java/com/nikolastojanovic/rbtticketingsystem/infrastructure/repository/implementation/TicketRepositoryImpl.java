@@ -47,8 +47,8 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
-    public Optional<Ticket> getByEvetId(@NonNull Long eventId) {
-        return ticketRepositoryJpa.findByEventId(eventId).map(ticketMapper::toDomain);
+    public List<Ticket> getByEvetId(@NonNull Long eventId) {
+        return ticketRepositoryJpa.findByEventId(eventId).stream().map(ticketMapper::toDomain).toList();
     }
 
     @Override

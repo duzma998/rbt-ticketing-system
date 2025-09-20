@@ -15,7 +15,7 @@ public class ApplicationOrderMapper {
         return null;
     }
 
-    public OrderRequest toRequest(ApplicationOrderRequest request, Principal principal) {
-        return new OrderRequest(principal.getName(), request.eventId(), request.seats(), OrderMethod.API, request.ticketCount());
+    public OrderRequest toRequest(ApplicationOrderRequest request, String principal, OrderMethod orderMethod) {
+        return new OrderRequest(principal, request.eventId(), request.seats(), orderMethod, request.ticketCount());
     }
 }

@@ -37,7 +37,7 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<EventResponse> createEvent(@RequestBody @NonNull ApplicationEventRequest eventRequest, @AuthenticationPrincipal Principal principal) {
+    public ResponseEntity<EventResponse> createEvent(@RequestBody @NonNull ApplicationEventRequest eventRequest, @AuthenticationPrincipal String principal) {
         var event = applicationEventService.createEvent(eventRequest, principal);
         return ResponseEntity.ok(event);
     }
@@ -58,7 +58,7 @@ public class EventController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<EventResponse> updateEvent(@RequestBody @NonNull ApplicationEventRequest eventRequest, @PathVariable @NonNull Long id, @AuthenticationPrincipal Principal principal) {
+    public ResponseEntity<EventResponse> updateEvent(@RequestBody @NonNull ApplicationEventRequest eventRequest, @PathVariable @NonNull Long id, @AuthenticationPrincipal String principal) {
         var event = applicationEventService.updateEvent( id, eventRequest, principal);
 
         return ResponseEntity.ok(event);

@@ -33,7 +33,7 @@ public class ApplicationEventMapper {
     }
 
 
-    public EventRequest toDomain(ApplicationEventRequest applicationEventRequest, Principal principal) {
+    public EventRequest toDomain(ApplicationEventRequest applicationEventRequest, String principal) {
         return new EventRequest(
                 applicationEventRequest.name(),
                 applicationEventRequest.description(),
@@ -46,7 +46,7 @@ public class ApplicationEventMapper {
                 applicationEventRequest.maxTicketsPerPurchase(),
                 applicationEventRequest.ticketPrice(),
                 applicationEventRequest.status(),
-                principal.getName(),
+                principal,
                 applicationEventRequest.createdAt(),
                 applicationEventRequest.updatedAt()
         );

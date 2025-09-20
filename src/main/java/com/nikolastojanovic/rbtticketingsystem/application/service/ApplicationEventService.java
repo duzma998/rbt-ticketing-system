@@ -38,14 +38,14 @@ public class ApplicationEventService {
     }
 
     @Transactional
-    public EventResponse createEvent(@NonNull ApplicationEventRequest eventRequest, Principal principal) {
+    public EventResponse createEvent(@NonNull ApplicationEventRequest eventRequest, String principal) {
         var event = eventMapper.toDomain(eventRequest, principal);
         var savedEvent = eventService.createEvent(event);
         return eventMapper.toResponse(savedEvent);
     }
 
     @Transactional
-    public EventResponse updateEvent(@NonNull Long id, @NonNull ApplicationEventRequest eventRequest, Principal principal) {
+    public EventResponse updateEvent(@NonNull Long id, @NonNull ApplicationEventRequest eventRequest, String principal) {
         var event = eventMapper.toDomain(eventRequest, principal);
         var updatedEvent = eventService.updateEvent(id, event);
         return eventMapper.toResponse(updatedEvent);

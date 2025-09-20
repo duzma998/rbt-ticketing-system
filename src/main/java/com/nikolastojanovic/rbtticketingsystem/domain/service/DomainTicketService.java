@@ -29,26 +29,28 @@ public class DomainTicketService implements TicketService {
             // todo: Add latter to seat number...
             tickets.add(createNewTicket(event, String.valueOf(i + 1)));
         }
-        ticketRepository.saveTickets(tickets, event.creator().Id(), event.id());
+        ticketRepository.saveTickets(tickets, event.creatorId(), event.id());
     }
 
     @Override
     public void reserveTicket(@NonNull Long eventId, @NonNull Long orderId, String seatNumber) {
-        Optional<Ticket> ticket = null;
+        Ticket ticket;
         if (seatNumber != null && !seatNumber.isBlank()) {
-            ticket = ticketRepository.getByEvetIdAndSeat(eventId, seatNumber);
+            ticket = ticketRepository.getByEvetIdAndSeat(eventId, seatNumber).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "Ticket are not available."));
         } else {
-            ticket = ticketRepository.getByEvetId(eventId);
+            var tickets = ticketRepository.getByEvetId(eventId);
+            ticket = tickets.stream().filter(t -> t.status() == TicketStatus.CREATED).findFirst().orElseThrow(() -> new CustomException(Error.NOT_FOUND, "Ticket are not available."));
         }
         // todo custom exception
-        var updatedTicket = ticket.map(t -> t.withStatus(TicketStatus.RESERVED).withOrderId(orderId)).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "Ticket for event ("+eventId+") not found"));
+        var updatedTicket = ticket.withOrderId(orderId);
+        updatedTicket = updatedTicket.withStatus(TicketStatus.RESERVED);
         ticketRepository.saveTicket(updatedTicket);
     }
 
     private Ticket createNewTicket(Event event, String seatNumber) {
         return Ticket.builder()
                 .eventId(event.id())
-                .userId(event.creator().Id()) // todo
+                .userId(event.creatorId())
                 .ticketCode(generateTicketCode())
                 .status(TicketStatus.CREATED)
                 .updatedAt(ZonedDateTime.now())

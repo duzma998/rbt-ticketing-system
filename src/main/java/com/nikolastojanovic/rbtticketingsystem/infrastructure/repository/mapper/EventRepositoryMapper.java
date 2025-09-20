@@ -29,7 +29,7 @@ public class EventRepositoryMapper {
                 entity.getCreatedBy() != null ? entity.getCreatedBy().getUsername() : null,
                 entity.getCreatedAt(),
                 entity.getUpdatedAt(),
-                null
+                entity.getCreatedBy().getId()
         );
     }
 

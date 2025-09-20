@@ -37,7 +37,6 @@ public class DomainEventService implements EventService {
     public Event createEvent(@NonNull EventRequest event) {
 
         var creator = userService.getUserByUsername(event.username());
-
         var saveEvent = Event.builder()
                 .name(event.name())
                 .description(event.description())
