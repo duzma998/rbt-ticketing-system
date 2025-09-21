@@ -42,7 +42,7 @@ public class ApplicationEventMapper {
                 applicationEventRequest.venueAddress(),
                 applicationEventRequest.eventDate(),
                 applicationEventRequest.totalTickets(),
-                applicationEventRequest.availableTickets(),
+                applicationEventRequest.totalTickets(), //  availableTickets = totalTickets
                 applicationEventRequest.maxTicketsPerPurchase(),
                 applicationEventRequest.ticketPrice(),
                 applicationEventRequest.status(),

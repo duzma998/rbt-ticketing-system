@@ -73,7 +73,7 @@ public class DomainEventService implements EventService {
                 .venueAddress(event.venueAddress() == null ? eventEntity.venueAddress() : event.venueAddress())
                 .eventDate(event.eventDate() == null ? eventEntity.eventDate() : event.eventDate())
                 .totalTickets(event.totalTickets() == null ? eventEntity.totalTickets() : event.totalTickets())
-                .availableTickets(event.availableTickets() == null ? eventEntity.availableTickets() : event.availableTickets())
+                .availableTickets(eventEntity.availableTickets())
                 .maxTicketsPerPurchase(event.maxTicketsPerPurchase() == null ? eventEntity.maxTicketsPerPurchase() : event.maxTicketsPerPurchase())
                 .ticketPrice(event.ticketPrice() == null ? eventEntity.ticketPrice() : event.ticketPrice())
                 .status(event.status() == null ? eventEntity.status() : event.status())

@@ -21,6 +21,6 @@ public class OrderEventListener {
         ObjectMapper mapper = new ObjectMapper();
         ApplicationOrderRequest request = mapper.readValue(message, ApplicationOrderRequest.class);
 
-        orderService.create(request, "nikola1234", OrderMethod.KAFKA);
+        orderService.create(request, "testadmin", OrderMethod.KAFKA);
     }
 }

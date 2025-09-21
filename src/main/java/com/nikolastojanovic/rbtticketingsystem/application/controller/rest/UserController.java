@@ -22,7 +22,6 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid ApplicationLoginRequest loginRequest) {
-        System.out.println(loginRequest);
         var token = userService.login(loginRequest);
         return ResponseEntity.ok(token);
     }

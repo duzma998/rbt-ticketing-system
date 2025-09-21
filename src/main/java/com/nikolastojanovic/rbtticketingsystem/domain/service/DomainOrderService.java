@@ -31,6 +31,14 @@ public class DomainOrderService implements OrderService {
         var event = eventRepository.getEvent(request.eventId());
         var order = createNewOrder(request, user, event);
 
+        if (event.availableTickets() < request.ticketCount()) {
+            throw new IllegalArgumentException("Not enough available tickets. Available: " +
+                    event.availableTickets() + ", Requested: " + request.ticketCount());
+        }
+
+        eventRepository.updateAvailableTickets(request.eventId(),
+                event.availableTickets() - request.ticketCount());
+
         final var savedOrder = orderRepository.saveOrder(order);
         if(request.seats() != null) {
             request.seats().forEach(s -> ticketService.reserveTicket(request.eventId(), savedOrder.id(), s));

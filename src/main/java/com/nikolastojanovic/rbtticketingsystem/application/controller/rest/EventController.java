@@ -4,6 +4,7 @@ import com.nikolastojanovic.rbtticketingsystem.application.model.request.Applica
 import com.nikolastojanovic.rbtticketingsystem.application.model.response.EventResponse;
 import com.nikolastojanovic.rbtticketingsystem.application.service.ApplicationEventService;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.common.PageResult;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,7 @@ public class EventController {
         return ResponseEntity.ok(events);
     }
 
+    @SecurityRequirement(name = "BearerAuth")
     @PostMapping
     public ResponseEntity<EventResponse> createEvent(@RequestBody @NonNull ApplicationEventRequest eventRequest, @AuthenticationPrincipal String principal) {
         var event = applicationEventService.createEvent(eventRequest, principal);
@@ -50,6 +52,7 @@ public class EventController {
         return ResponseEntity.ok(event);
     }
 
+    @SecurityRequirement(name = "BearerAuth")
     @DeleteMapping("/{id}")
     public ResponseEntity<EventResponse> deleteEvent(@PathVariable @NonNull Long id) {
         applicationEventService.deleteEvent(id);
@@ -57,6 +60,7 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
+    @SecurityRequirement(name = "BearerAuth")
     @PatchMapping("/{id}")
     public ResponseEntity<EventResponse> updateEvent(@RequestBody @NonNull ApplicationEventRequest eventRequest, @PathVariable @NonNull Long id, @AuthenticationPrincipal String principal) {
         var event = applicationEventService.updateEvent( id, eventRequest, principal);

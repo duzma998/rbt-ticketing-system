@@ -64,4 +64,10 @@ public class EventRepositoryImpl implements EventRepository {
         return eventMapper.toDomain(updatedEntity);
     }
 
+    @Override
+    public void updateAvailableTickets(@NonNull Long eventId, @NonNull Integer newAvailableTickets) {
+        eventRepositoryJpa.updateAvailableTickets(eventId, newAvailableTickets);
+    }
+
+
 }

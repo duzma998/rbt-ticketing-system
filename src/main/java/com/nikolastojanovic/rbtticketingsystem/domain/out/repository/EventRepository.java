@@ -8,8 +8,14 @@ import lombok.NonNull;
 
 public interface EventRepository {
     PageResult<Event> getEvents(@NonNull Page page);
+
     Event getEvent(@NonNull Long eventId);
+
     Event saveEvent(@NonNull Event event);
+
     void deleteEvent(@NonNull Long eventId);
+
     Event updateEvent(@NonNull Event event);
+
+    void updateAvailableTickets(@NonNull Long eventId, @NonNull Integer newAvailableTickets);
 }

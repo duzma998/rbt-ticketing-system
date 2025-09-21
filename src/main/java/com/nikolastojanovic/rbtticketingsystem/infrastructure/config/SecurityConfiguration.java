@@ -36,6 +36,17 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/v1/users/login", "/api/v1/users/signup").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/events").permitAll()
+                        // todo: implement role based access on other routes
+                        .requestMatchers(HttpMethod.POST, "/api/v1/events").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/events/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/events/**").hasRole("ADMIN")
+                        .requestMatchers("/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui/index.html",
+                                "/v3/api-docs/**",
+                                "/webjars/**",
+                                "/swagger-resources/**",
+                                "/swagger-resources").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

@@ -1,6 +1,4 @@
-ALTER TABLE orders
-DROP
-COLUMN transaction_id;
+ALTER TABLE orders DROP COLUMN IF EXISTS transaction_id;
 
 ALTER TABLE tickets
     ALTER COLUMN order_id DROP NOT NULL;
