@@ -7,12 +7,8 @@ import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.OrderMethod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +18,6 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(@RequestBody ApplicationOrderRequest request, @AuthenticationPrincipal String principal) {
-       return ResponseEntity.ok(orderService.create(request, principal, OrderMethod.API));
+        return ResponseEntity.ok(orderService.create(request, principal, OrderMethod.API));
     }
 }

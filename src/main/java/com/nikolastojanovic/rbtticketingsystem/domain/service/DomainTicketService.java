@@ -36,6 +36,7 @@ public class DomainTicketService implements TicketService {
     public void reserveTicket(@NonNull Long eventId, @NonNull Long orderId, String seatNumber) {
         Ticket ticket;
         if (seatNumber != null && !seatNumber.isBlank()) {
+            // todo custom exeption for seat number or ticket
             ticket = ticketRepository.getByEvetIdAndSeat(eventId, seatNumber).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "Ticket are not available."));
         } else {
             var tickets = ticketRepository.getByEvetId(eventId);
