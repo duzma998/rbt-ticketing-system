@@ -29,6 +29,7 @@ public class DomainUserService implements UserService {
 
     @Override
     public User signUp(@NonNull SignUpRequest request) {
+
         if (userRepository.getByUsername(request.username()).isPresent()) {
             throw new CustomException(Error.VALIDATION_ERROR, "Username already exists");
         }

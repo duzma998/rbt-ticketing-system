@@ -8,7 +8,6 @@ import com.nikolastojanovic.rbtticketingsystem.domain.model.common.Page;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.common.PageResult;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.request.EventRequest;
 import com.nikolastojanovic.rbtticketingsystem.domain.out.repository.EventRepository;
-import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.entity.EventEntity;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 

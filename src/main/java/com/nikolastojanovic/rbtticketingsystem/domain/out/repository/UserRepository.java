@@ -24,5 +24,4 @@ public interface UserRepository {
 
   User save(@NonNull User user);
 
-
 }

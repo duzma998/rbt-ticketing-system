@@ -35,6 +35,7 @@ public class TicketRepositoryImpl implements TicketRepository {
             var entity = ticketMapper.toEntity(e);
             entity.setUser(user);
             entity.setEvent(event);
+
             return entity;
         }).toList();
 
@@ -53,6 +54,7 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public void saveTicket(@NonNull Ticket updatedTicket) {
+
         var event = eventRepositoryJpa.findById(updatedTicket.eventId()).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "Event ("+updatedTicket.eventId()+") not found on ticket update."));
         var user = userRepositoryJpa.findById(updatedTicket.userId()).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "User ("+updatedTicket.userId()+") not found on ticket update."));
         var order = orderRepositoryJpa.findById(updatedTicket.orderId()).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "Order ("+updatedTicket.orderId()+") not found on ticket update."));

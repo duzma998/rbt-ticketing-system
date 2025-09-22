@@ -5,6 +5,7 @@ import com.nikolastojanovic.rbtticketingsystem.application.model.response.EventR
 import com.nikolastojanovic.rbtticketingsystem.application.service.ApplicationEventService;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.common.PageResult;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,7 @@ public class EventController {
 
     @SecurityRequirement(name = "BearerAuth")
     @PostMapping
-    public ResponseEntity<EventResponse> createEvent(@RequestBody @NonNull ApplicationEventRequest eventRequest, @AuthenticationPrincipal String principal) {
+    public ResponseEntity<EventResponse> createEvent(@RequestBody @NonNull @Valid ApplicationEventRequest eventRequest, @AuthenticationPrincipal String principal) {
         var event = applicationEventService.createEvent(eventRequest, principal);
         return ResponseEntity.ok(event);
     }

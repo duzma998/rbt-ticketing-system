@@ -43,9 +43,11 @@ public class EventRepositoryImpl implements EventRepository {
 
     @Override
     public Event saveEvent(@NonNull Event event) {
+
         var creatorEntity = userRepositoryJpa.findById(event.creatorId()).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "Creator not found."));
         var eventEntity = eventMapper.toEntity(event, creatorEntity);
         var savedEntity = eventRepositoryJpa.save(eventEntity);
+
         return eventMapper.toDomain(savedEntity);
     }
 
@@ -58,9 +60,9 @@ public class EventRepositoryImpl implements EventRepository {
     public Event updateEvent(@NonNull Event event) {
 
         var creatorEntity = userRepositoryJpa.findById(event.creatorId()).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "Creator not found."));
-
         var eventEntity = eventMapper.toEntity(event, creatorEntity);
         var updatedEntity = eventRepositoryJpa.save(eventEntity);
+
         return eventMapper.toDomain(updatedEntity);
     }
 

@@ -21,9 +21,11 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order saveOrder(@NonNull Order order) {
+
         var user = userRepositoryJpa.findById(order.userId()).orElseThrow();
         var event = eventRepositoryJpa.findById(order.eventId()).orElseThrow();
         var entity = orderMapper.toEntity(order);
+
         entity.setEvent(event);
         entity.setUser(user);
 
