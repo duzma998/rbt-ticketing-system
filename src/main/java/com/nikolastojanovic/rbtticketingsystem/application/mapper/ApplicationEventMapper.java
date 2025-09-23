@@ -4,14 +4,13 @@ import com.nikolastojanovic.rbtticketingsystem.application.model.request.Applica
 import com.nikolastojanovic.rbtticketingsystem.application.model.response.EventResponse;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.Event;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.request.EventRequest;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
-
-import java.security.Principal;
 
 @Component
 public class ApplicationEventMapper {
 
-    public EventResponse toResponse(Event event) {
+    public EventResponse toResponse(@NotNull Event event) {
         return new EventResponse(
                 event.id(),
                 event.name(),
@@ -27,28 +26,23 @@ public class ApplicationEventMapper {
                 event.status(),
                 event.createdBy(),
                 event.createdAt(),
-                event.updatedAt(),
-                null
+                event.updatedAt()
         );
     }
 
-
-    public EventRequest toDomain(ApplicationEventRequest applicationEventRequest, String principal) {
+    public EventRequest toDomain(@NotNull ApplicationEventRequest request, @NotNull String principal) {
         return new EventRequest(
-                applicationEventRequest.name(),
-                applicationEventRequest.description(),
-                applicationEventRequest.eventType(),
-                applicationEventRequest.venueName(),
-                applicationEventRequest.venueAddress(),
-                applicationEventRequest.eventDate(),
-                applicationEventRequest.totalTickets(),
-                applicationEventRequest.totalTickets(), //  availableTickets = totalTickets
-                applicationEventRequest.maxTicketsPerPurchase(),
-                applicationEventRequest.ticketPrice(),
-                applicationEventRequest.status(),
-                principal,
-                applicationEventRequest.createdAt(),
-                applicationEventRequest.updatedAt()
+                request.name(),
+                request.description(),
+                request.eventType(),
+                request.venueName(),
+                request.venueAddress(),
+                request.eventDate(),
+                request.totalTickets(),
+                request.totalTickets(), // availableTickets initially equals totalTickets
+                request.maxTicketsPerPurchase(),
+                request.ticketPrice(),
+                principal
         );
     }
 }

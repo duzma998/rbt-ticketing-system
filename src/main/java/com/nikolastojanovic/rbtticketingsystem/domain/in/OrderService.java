@@ -5,5 +5,6 @@ import com.nikolastojanovic.rbtticketingsystem.domain.model.request.OrderRequest
 import lombok.NonNull;
 
 public interface OrderService {
+
     Order createOrder(@NonNull OrderRequest request);
 }

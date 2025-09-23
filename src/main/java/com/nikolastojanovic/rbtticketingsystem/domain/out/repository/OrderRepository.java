@@ -4,5 +4,6 @@ import com.nikolastojanovic.rbtticketingsystem.domain.model.Order;
 import lombok.NonNull;
 
 public interface OrderRepository {
+
     Order saveOrder(@NonNull Order order);
 }

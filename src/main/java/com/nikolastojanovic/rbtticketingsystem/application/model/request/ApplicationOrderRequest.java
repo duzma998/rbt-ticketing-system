@@ -13,5 +13,4 @@ public record ApplicationOrderRequest(
 
         @Positive(message = "Ticket count must be positive")
         Integer ticketCount
-) {
-}
+) {}

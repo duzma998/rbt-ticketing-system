@@ -13,24 +13,19 @@ import com.nikolastojanovic.rbtticketingsystem.domain.out.service.Authentication
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-  private final AuthenticationManager authenticationManager;
-  private final PasswordEncoder passwordEncoder;
-  private final JwtServiceImpl jwtService;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtServiceImpl jwtService;
 
-  @Override
-  public String login(@NonNull LoginRequest request) {
-    authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(request.username(), request.password()));
-    return jwtService.generateToken(request.username());
-  }
+    @Override
+    public String login(@NonNull LoginRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.username(), request.password()));
+        return jwtService.generateToken(request.username());
+    }
 
-  @Override
-  public String encodePassword(@NonNull String password) {
-    return passwordEncoder.encode(password);
-  }
-
-  @Override
-  public boolean passwordEquals(@NonNull String password, @NonNull String encodedPassword) {
-    return passwordEncoder.matches(password, encodedPassword);
-  }
+    @Override
+    public String encodePassword(@NonNull String password) {
+        return passwordEncoder.encode(password);
+    }
 }

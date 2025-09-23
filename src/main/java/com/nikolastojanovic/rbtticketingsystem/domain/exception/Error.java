@@ -7,8 +7,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Error {
     NOT_FOUND(404, "Not Found"),
+    BAD_REQUEST(400, "Bad request"),
     VALIDATION_ERROR(400, "Validation failed"),
     FORBIDDEN(403, "Forbidden");
+
     private final Integer status;
     private final String label;
 }

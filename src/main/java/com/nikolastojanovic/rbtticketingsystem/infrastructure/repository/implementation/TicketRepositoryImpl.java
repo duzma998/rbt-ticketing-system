@@ -1,9 +1,11 @@
 package com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.implementation;
 
-import com.nikolastojanovic.rbtticketingsystem.domain.exception.CustomException;
+import com.nikolastojanovic.rbtticketingsystem.domain.exception.TicketingException;
 import com.nikolastojanovic.rbtticketingsystem.domain.exception.Error;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.Ticket;
+import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.TicketStatus;
 import com.nikolastojanovic.rbtticketingsystem.domain.out.repository.TicketRepository;
+import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.enums.InfraTicketStatus;
 import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.jpa.EventRepositoryJpa;
 import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.jpa.OrderRepositoryJpa;
 import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.jpa.TicketRepositoryJpa;
@@ -13,6 +15,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,8 +31,8 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public void saveTickets(@NonNull List<Ticket> tickets, @NonNull Long userId, @NonNull Long eventId) {
-        var event = eventRepositoryJpa.findById(eventId).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "Event ("+eventId+") not found on ticket generation."));
-        var user = userRepositoryJpa.findById(userId).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "User ("+userId+") not found on ticket generation."));
+        var event = eventRepositoryJpa.findById(eventId).orElseThrow(() -> new TicketingException(Error.NOT_FOUND, "Event (" + eventId + ") not found on ticket generation."));
+        var user = userRepositoryJpa.findById(userId).orElseThrow(() -> new TicketingException(Error.NOT_FOUND, "User (" + userId + ") not found on ticket generation."));
 
         var entities = tickets.stream().map(e -> {
             var entity = ticketMapper.toEntity(e);
@@ -55,9 +58,12 @@ public class TicketRepositoryImpl implements TicketRepository {
     @Override
     public void saveTicket(@NonNull Ticket updatedTicket) {
 
-        var event = eventRepositoryJpa.findById(updatedTicket.eventId()).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "Event ("+updatedTicket.eventId()+") not found on ticket update."));
-        var user = userRepositoryJpa.findById(updatedTicket.userId()).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "User ("+updatedTicket.userId()+") not found on ticket update."));
-        var order = orderRepositoryJpa.findById(updatedTicket.orderId()).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "Order ("+updatedTicket.orderId()+") not found on ticket update."));
+        var event = eventRepositoryJpa.findById(updatedTicket.eventId()).orElseThrow(
+                () -> new TicketingException(Error.NOT_FOUND, "Event (" + updatedTicket.eventId() + ") not found on ticket update."));
+        var user = userRepositoryJpa.findById(updatedTicket.userId()).orElseThrow(
+                () -> new TicketingException(Error.NOT_FOUND, "User (" + updatedTicket.userId() + ") not found on ticket update."));
+        var order = orderRepositoryJpa.findById(updatedTicket.orderId()).orElseThrow(
+                () -> new TicketingException(Error.NOT_FOUND, "Order (" + updatedTicket.orderId() + ") not found on ticket update."));
 
         var entity = ticketMapper.toEntity(updatedTicket);
         entity.setUser(user);

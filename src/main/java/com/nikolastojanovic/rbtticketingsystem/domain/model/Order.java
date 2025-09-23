@@ -17,5 +17,4 @@ public record Order(
         OrderMethod orderMethod,
         ZonedDateTime createdAt,
         ZonedDateTime updatedAt
-) {
-}
+) {}

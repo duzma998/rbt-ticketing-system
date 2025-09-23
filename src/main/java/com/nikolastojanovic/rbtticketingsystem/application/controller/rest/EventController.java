@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.constraints.Min;
 
-import java.security.Principal;
-
 @RestController
 @RequestMapping("/api/v1/events")
 @RequiredArgsConstructor
@@ -31,8 +29,8 @@ public class EventController {
     @GetMapping
     public ResponseEntity<PageResult<EventResponse>> getPublicEvents(
             @RequestParam(defaultValue = "0") @Min(0) int page,
-            @RequestParam(defaultValue = "20") @Min(1) int size) {
-
+            @RequestParam(defaultValue = "20") @Min(1) int size
+    ) {
         var events = applicationEventService.getEvents(page, size);
 
         return ResponseEntity.ok(events);
@@ -40,7 +38,10 @@ public class EventController {
 
     @SecurityRequirement(name = "BearerAuth")
     @PostMapping
-    public ResponseEntity<EventResponse> createEvent(@RequestBody @NonNull @Valid ApplicationEventRequest eventRequest, @AuthenticationPrincipal String principal) {
+    public ResponseEntity<EventResponse> createEvent(
+            @RequestBody @NonNull @Valid ApplicationEventRequest eventRequest,
+            @AuthenticationPrincipal String principal
+    ) {
         var event = applicationEventService.createEvent(eventRequest, principal);
         return ResponseEntity.ok(event);
     }
@@ -63,8 +64,12 @@ public class EventController {
 
     @SecurityRequirement(name = "BearerAuth")
     @PatchMapping("/{id}")
-    public ResponseEntity<EventResponse> updateEvent(@RequestBody @NonNull ApplicationEventRequest eventRequest, @PathVariable @NonNull Long id, @AuthenticationPrincipal String principal) {
-        var event = applicationEventService.updateEvent( id, eventRequest, principal);
+    public ResponseEntity<EventResponse> updateEvent(
+            @RequestBody @NonNull ApplicationEventRequest eventRequest,
+            @PathVariable @NonNull Long id,
+            @AuthenticationPrincipal String principal
+    ) {
+        var event = applicationEventService.updateEvent(id, eventRequest, principal);
 
         return ResponseEntity.ok(event);
     }

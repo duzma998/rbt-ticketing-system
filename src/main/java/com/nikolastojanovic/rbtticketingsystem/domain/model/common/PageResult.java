@@ -8,6 +8,7 @@ import lombok.Builder;
 public record PageResult<T>(
         List<T> content,
         long totalElements,
-        int totalPages
-) {
-}
+        int totalPages,
+        int currentPage,
+        int size
+) {}

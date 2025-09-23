@@ -16,5 +16,4 @@ public record User(
         UserRole role,
         LocalDateTime updatedAt,
         LocalDateTime createdAt
-) {
-}
+) {}

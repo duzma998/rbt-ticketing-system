@@ -1,6 +1,5 @@
 package com.nikolastojanovic.rbtticketingsystem.application.model.response;
 
-import com.nikolastojanovic.rbtticketingsystem.domain.model.User;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.EventStatus;
 
 import java.time.ZonedDateTime;
@@ -20,7 +19,5 @@ public record EventResponse(
         EventStatus status,
         String createdBy,
         ZonedDateTime createdAt,
-        ZonedDateTime updatedAt,
-        User creator
-) {
-}
+        ZonedDateTime updatedAt
+) {}

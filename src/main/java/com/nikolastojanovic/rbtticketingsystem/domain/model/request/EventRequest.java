@@ -1,8 +1,5 @@
 package com.nikolastojanovic.rbtticketingsystem.domain.model.request;
 
-import com.nikolastojanovic.rbtticketingsystem.domain.model.User;
-import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.EventStatus;
-
 import java.time.ZonedDateTime;
 
 public record EventRequest(
@@ -16,10 +13,5 @@ public record EventRequest(
         Integer availableTickets,
         Integer maxTicketsPerPurchase,
         Double ticketPrice,
-        EventStatus status,
-        String username,
-        ZonedDateTime createdAt,
-        ZonedDateTime updatedAt
-) {
-
-}
+        String username
+) {}

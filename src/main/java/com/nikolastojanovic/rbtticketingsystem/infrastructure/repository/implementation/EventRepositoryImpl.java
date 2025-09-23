@@ -1,6 +1,6 @@
 package com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.implementation;
 
-import com.nikolastojanovic.rbtticketingsystem.domain.exception.CustomException;
+import com.nikolastojanovic.rbtticketingsystem.domain.exception.TicketingException;
 import com.nikolastojanovic.rbtticketingsystem.domain.exception.Error;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.Event;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.common.Page;
@@ -38,13 +38,13 @@ public class EventRepositoryImpl implements EventRepository {
     @Override
     public Event getEvent(@NonNull Long eventId) {
 
-        return eventRepositoryJpa.findById(eventId).map(eventMapper::toDomain).orElse(null);
+        return eventRepositoryJpa.findById(eventId).map(eventMapper::toDomain).orElseThrow(() -> new TicketingException(Error.NOT_FOUND, "Event ("+eventId+") not found."));
     }
 
     @Override
     public Event saveEvent(@NonNull Event event) {
 
-        var creatorEntity = userRepositoryJpa.findById(event.creatorId()).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "Creator not found."));
+        var creatorEntity = userRepositoryJpa.findById(event.creatorId()).orElseThrow(() -> new TicketingException(Error.NOT_FOUND, "Creator not found."));
         var eventEntity = eventMapper.toEntity(event, creatorEntity);
         var savedEntity = eventRepositoryJpa.save(eventEntity);
 
@@ -59,7 +59,7 @@ public class EventRepositoryImpl implements EventRepository {
     @Override
     public Event updateEvent(@NonNull Event event) {
 
-        var creatorEntity = userRepositoryJpa.findById(event.creatorId()).orElseThrow(() -> new CustomException(Error.NOT_FOUND, "Creator not found."));
+        var creatorEntity = userRepositoryJpa.findById(event.creatorId()).orElseThrow(() -> new TicketingException(Error.NOT_FOUND, "Creator not found."));
         var eventEntity = eventMapper.toEntity(event, creatorEntity);
         var updatedEntity = eventRepositoryJpa.save(eventEntity);
 
@@ -70,6 +70,4 @@ public class EventRepositoryImpl implements EventRepository {
     public void updateAvailableTickets(@NonNull Long eventId, @NonNull Integer newAvailableTickets) {
         eventRepositoryJpa.updateAvailableTickets(eventId, newAvailableTickets);
     }
-
-
 }

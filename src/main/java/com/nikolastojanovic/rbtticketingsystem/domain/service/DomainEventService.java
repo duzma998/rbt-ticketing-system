@@ -10,79 +10,59 @@ import com.nikolastojanovic.rbtticketingsystem.domain.model.request.EventRequest
 import com.nikolastojanovic.rbtticketingsystem.domain.out.repository.EventRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 
 @AllArgsConstructor
+@Service
 public class DomainEventService implements EventService {
 
     private final EventRepository eventRepository;
     private final UserService userService;
     private final TicketService ticketService;
 
-
     @Override
     public PageResult<Event> getEvents(@NonNull Page page) {
-
         return eventRepository.getEvents(page);
     }
 
     @Override
     public Event getEvent(@NonNull Long id) {
-
         return eventRepository.getEvent(id);
     }
 
     @Override
-    public Event createEvent(@NonNull EventRequest event) {
+    public Event createEvent(@NonNull EventRequest request) {
+        var creator = userService.getUserByUsername(request.username());
 
-        var creator = userService.getUserByUsername(event.username());
-        var saveEvent = Event.builder()
-                .name(event.name())
-                .description(event.description())
-                .eventType(event.eventType())
-                .venueName(event.venueName())
-                .venueAddress(event.venueAddress())
-                .eventDate(event.eventDate())
-                .totalTickets(event.totalTickets())
-                .availableTickets(event.availableTickets())
-                .maxTicketsPerPurchase(event.maxTicketsPerPurchase())
-                .ticketPrice(event.ticketPrice())
-                .status(event.status())
-                .createdBy(event.username())
-                .createdAt(event.createdAt())
-                .updatedAt(event.updatedAt())
+        var event = buildEventFromRequest(request)
+                .createdBy(request.username())
                 .creatorId(creator.Id())
                 .build();
 
-        var savedEvent =  eventRepository.saveEvent(saveEvent);
+        var savedEvent = eventRepository.saveEvent(event);
         ticketService.initializeTicketsForEvent(savedEvent);
         return savedEvent;
     }
 
     @Override
-    public Event updateEvent(@NonNull Long eventId, @NonNull EventRequest event) {
+    public Event updateEvent(@NonNull Long eventId, @NonNull EventRequest request) {
+        var existingEvent = eventRepository.getEvent(eventId);
 
-        var eventEntity = eventRepository.getEvent(eventId);
-
-        var patchedEvent = Event.builder().id(eventId)
-                .name(event.name() == null ? eventEntity.name() : event.name())
-                .description(event.description() == null ? eventEntity.description() : event.description())
-                .eventType(event.eventType() == null ? eventEntity.eventType() : event.eventType())
-                .venueName(event.venueName() == null ? eventEntity.venueName() : event.venueName())
-                .venueAddress(event.venueAddress() == null ? eventEntity.venueAddress() : event.venueAddress())
-                .eventDate(event.eventDate() == null ? eventEntity.eventDate() : event.eventDate())
-                .totalTickets(event.totalTickets() == null ? eventEntity.totalTickets() : event.totalTickets())
-                .availableTickets(eventEntity.availableTickets())
-                .maxTicketsPerPurchase(event.maxTicketsPerPurchase() == null ? eventEntity.maxTicketsPerPurchase() : event.maxTicketsPerPurchase())
-                .ticketPrice(event.ticketPrice() == null ? eventEntity.ticketPrice() : event.ticketPrice())
-                .status(event.status() == null ? eventEntity.status() : event.status())
-                .createdBy(eventEntity.createdBy())
-                .createdAt(eventEntity.createdAt())
-                .updatedAt(eventEntity.updatedAt())
-                .creatorId(eventEntity.creatorId())
+        var updatedEvent = Event.builder()
+                .name(getValueOrDefault(request.name(), existingEvent.name()))
+                .description(getValueOrDefault(request.description(), existingEvent.description()))
+                .eventType(getValueOrDefault(request.eventType(), existingEvent.eventType()))
+                .venueName(getValueOrDefault(request.venueName(), existingEvent.venueName()))
+                .venueAddress(getValueOrDefault(request.venueAddress(), existingEvent.venueAddress()))
+                .eventDate(getValueOrDefault(request.eventDate(), existingEvent.eventDate()))
+                .totalTickets(getValueOrDefault(request.totalTickets(), existingEvent.totalTickets()))
+                .maxTicketsPerPurchase(getValueOrDefault(request.maxTicketsPerPurchase(), existingEvent.maxTicketsPerPurchase()))
+                .ticketPrice(getValueOrDefault(request.ticketPrice(), existingEvent.ticketPrice()))
                 .build();
 
-        return eventRepository.updateEvent(patchedEvent);
+        return eventRepository.updateEvent(updatedEvent);
     }
 
     @Override
@@ -90,4 +70,21 @@ public class DomainEventService implements EventService {
         eventRepository.deleteEvent(eventId);
     }
 
+    private Event.EventBuilder buildEventFromRequest(EventRequest request) {
+        return Event.builder()
+                .name(request.name())
+                .description(request.description())
+                .eventType(request.eventType())
+                .venueName(request.venueName())
+                .venueAddress(request.venueAddress())
+                .eventDate(request.eventDate())
+                .totalTickets(request.totalTickets())
+                .availableTickets(request.availableTickets())
+                .maxTicketsPerPurchase(request.maxTicketsPerPurchase())
+                .ticketPrice(request.ticketPrice());
+    }
+
+    private <T> T getValueOrDefault(T newValue, T defaultValue) {
+        return Objects.requireNonNullElse(newValue, defaultValue);
+    }
 }

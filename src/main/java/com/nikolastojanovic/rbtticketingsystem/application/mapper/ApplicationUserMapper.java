@@ -16,7 +16,7 @@ public class ApplicationUserMapper {
     }
 
     public SignUpRequest toSignUpRequest(ApplicationSignUpRequest signUpRequest) {
-        return new SignUpRequest(signUpRequest.username(), signUpRequest.email(),signUpRequest.firstname(),signUpRequest.lastname(), signUpRequest.password());
+        return new SignUpRequest(signUpRequest.username(), signUpRequest.email(),signUpRequest.firstName(),signUpRequest.lastName(), signUpRequest.password());
     }
 
     public UserResponse toUserResponse(User user) {

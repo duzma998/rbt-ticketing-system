@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.Principal;
-
 import static com.nikolastojanovic.rbtticketingsystem.infrastructure.util.PageUtil.toPageResult;
 
 @RequiredArgsConstructor
@@ -30,7 +28,7 @@ public class ApplicationEventService {
         return toPageResult(events, eventMapper::toResponse);
     }
 
-    public EventResponse getEventById (@NonNull Long id) {
+    public EventResponse getEventById(@NonNull Long id) {
 
         var event = eventService.getEvent(id);
 

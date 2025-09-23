@@ -15,6 +15,8 @@ public class PageUtil {
                 .content(page.getContent().stream().map(mapper).toList())
                 .totalElements(page.getTotalElements())
                 .totalPages(page.getTotalPages())
+                .currentPage(page.getNumber())
+                .size(page.getSize())
                 .build();
 
     }
@@ -25,8 +27,9 @@ public class PageUtil {
                 .content(page.content().stream().map(mapper).toList())
                 .totalElements(page.totalElements())
                 .totalPages(page.totalPages())
+                .currentPage(page.currentPage())
+                .size(page.size())
                 .build();
 
     }
-
 }

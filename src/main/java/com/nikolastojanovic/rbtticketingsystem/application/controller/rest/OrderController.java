@@ -17,7 +17,10 @@ public class OrderController {
     private final ApplicationOrderService orderService;
 
     @PostMapping
-    public ResponseEntity<OrderResponse> createOrder(@RequestBody ApplicationOrderRequest request, @AuthenticationPrincipal String principal) {
+    public ResponseEntity<OrderResponse> createOrder(
+            @RequestBody ApplicationOrderRequest request,
+            @AuthenticationPrincipal String principal
+    ) {
         return ResponseEntity.ok(orderService.create(request, principal, OrderMethod.API));
     }
 }

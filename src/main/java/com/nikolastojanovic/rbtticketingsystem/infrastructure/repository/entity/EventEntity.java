@@ -7,8 +7,6 @@ import lombok.experimental.FieldDefaults;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -106,6 +104,7 @@ public class EventEntity {
     protected void onCreate() {
         createdAt = ZonedDateTime.now();
         updatedAt = ZonedDateTime.now();
+        status = InfraEventStatus.ACTIVE;
     }
 
 }

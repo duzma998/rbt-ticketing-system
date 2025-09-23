@@ -6,12 +6,12 @@ import java.util.stream.Collectors;
 import lombok.Getter;
 
 @Getter
-public class CustomException extends RuntimeException {
+public class TicketingException extends RuntimeException {
 
     private final Error error;
 
-    public CustomException(Error error, Object... params) {
-        super(error.getLabel() + "; " + Arrays.stream(params).map(String::valueOf)
+    public TicketingException(Error error, Object... params) {
+        super(Arrays.stream(params).map(String::valueOf)
                 .collect(Collectors.joining("; ")));
         this.error = error;
     }

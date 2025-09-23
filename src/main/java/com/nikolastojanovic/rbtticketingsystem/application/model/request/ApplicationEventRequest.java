@@ -1,6 +1,5 @@
 package com.nikolastojanovic.rbtticketingsystem.application.model.request;
 
-import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.EventStatus;
 import lombok.Builder;
 import jakarta.validation.constraints.*;
 import java.time.ZonedDateTime;
@@ -29,21 +28,11 @@ public record ApplicationEventRequest(
         @Positive(message = "Total tickets must be positive")
         Integer totalTickets,
 
-        @NotNull(message = "Available tickets is required")
-        @PositiveOrZero(message = "Available tickets must be zero or positive")
-        Integer availableTickets,
-
         @NotNull(message = "Max tickets per purchase is required")
         @Positive(message = "Max tickets per purchase must be positive")
         Integer maxTicketsPerPurchase,
 
         @NotNull(message = "Ticket price is required")
-        @DecimalMin(value = "0.0", inclusive = true, message = "Ticket price must be zero or positive")
-        Double ticketPrice,
-
-        EventStatus status,
-
-        ZonedDateTime createdAt,
-
-        ZonedDateTime updatedAt
-) { }
+        @DecimalMin(value = "0.0", message = "Ticket price must be zero or positive")
+        Double ticketPrice
+) {}

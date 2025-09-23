@@ -18,5 +18,4 @@ public record Ticket(
         TicketStatus status,
         ZonedDateTime createdAt,
         ZonedDateTime updatedAt
-) {
-}
+) {}

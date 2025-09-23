@@ -14,11 +14,11 @@ NOT EXISTS (SELECT 1 FROM users WHERE role = 'ADMIN') THEN
             created_at,
             updated_at
         ) VALUES (
-            'testadmin',
-            'testadmin12312@ticketing.system',
+            'system',
+            'admin@ticketing.system',
             '$2a$10$Ys0Z8C6YtocCUrLlhbaxvOOWVrgSRqXd7ZfjUNnN2ZNUgkTzu3vkK',
-            'Test1',
-            'Admin1',
+            'Technical',
+            'Admin',
             'ADMIN',
             CURRENT_TIMESTAMP,
             CURRENT_TIMESTAMP

@@ -13,7 +13,7 @@ import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import com.nikolastojanovic.rbtticketingsystem.domain.exception.CustomException;
+import com.nikolastojanovic.rbtticketingsystem.domain.exception.TicketingException;
 import com.nikolastojanovic.rbtticketingsystem.domain.exception.Error;
 import com.nikolastojanovic.rbtticketingsystem.infrastructure.properties.JwtProperties;
 
@@ -51,7 +51,7 @@ public class JwtServiceImpl {
           .parseSignedClaims(token)
           .getPayload();
     } catch (SignatureException | ExpiredJwtException e) { // Invalid signature or expired token
-      throw new CustomException(Error.FORBIDDEN, "Access denied: Invalid token");
+      throw new TicketingException(Error.FORBIDDEN, "Access denied: Invalid token");
     }
   }
 

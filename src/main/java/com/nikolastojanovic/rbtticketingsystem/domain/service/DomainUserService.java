@@ -1,6 +1,6 @@
 package com.nikolastojanovic.rbtticketingsystem.domain.service;
 
-import com.nikolastojanovic.rbtticketingsystem.domain.exception.CustomException;
+import com.nikolastojanovic.rbtticketingsystem.domain.exception.TicketingException;
 import com.nikolastojanovic.rbtticketingsystem.domain.exception.Error;
 import com.nikolastojanovic.rbtticketingsystem.domain.in.UserService;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.User;
@@ -12,10 +12,12 @@ import com.nikolastojanovic.rbtticketingsystem.domain.out.repository.UserReposit
 import com.nikolastojanovic.rbtticketingsystem.domain.out.service.AuthenticationService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
+@Service
 public class DomainUserService implements UserService {
 
     private final UserRepository userRepository;
@@ -31,7 +33,7 @@ public class DomainUserService implements UserService {
     public User signUp(@NonNull SignUpRequest request) {
 
         if (userRepository.getByUsername(request.username()).isPresent()) {
-            throw new CustomException(Error.VALIDATION_ERROR, "Username already exists");
+            throw new TicketingException(Error.VALIDATION_ERROR, "Username already exists");
         }
         var user = User.builder().username(request.username())
                 .firstName(request.firstname())
@@ -48,6 +50,6 @@ public class DomainUserService implements UserService {
     @Override
     public User getUserByUsername(@NonNull String username) {
         return userRepository.getByUsername(username)
-                .orElseThrow(() -> new CustomException(Error.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new TicketingException(Error.NOT_FOUND, "User not found"));
     }
 }

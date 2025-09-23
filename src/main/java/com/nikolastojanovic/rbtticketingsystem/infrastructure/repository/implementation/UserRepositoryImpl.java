@@ -19,18 +19,13 @@ public class UserRepositoryImpl implements UserRepository {
     private final UserRepositoryMapper userMapper;
 
     @Override
-    public Optional<User> getById(@NonNull Long id) {
-        return userRepositoryJpa.findById(id).map(userMapper::toDomain);
-    }
-
-    @Override
     public Optional<User> getByUsername(@NonNull String username) {
         return userRepositoryJpa.findByUsername(username).map(userMapper::toDomain);
     }
 
     @Override
     public User save(@NonNull User user) {
-        UserEntity userEntity =  userRepositoryJpa.save(userMapper.toEntity(user));
+        var userEntity = userRepositoryJpa.save(userMapper.toEntity(user));
         return userMapper.toDomain(userEntity);
     }
 }

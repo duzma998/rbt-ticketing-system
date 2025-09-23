@@ -10,5 +10,4 @@ public record OrderRequest(
         List<String> seats,
         OrderMethod orderMethod,
         Integer ticketCount
-) {
-}
+) {}
