@@ -19,5 +19,5 @@ public interface EventRepositoryJpa extends JpaRepository<EventEntity, Long> {
     @Query("UPDATE EventEntity e SET e.availableTickets = :availableTickets WHERE e.id = :eventId")
     void updateAvailableTickets(@NonNull @Param("eventId") Long eventId, @NonNull @Param("availableTickets") Integer availableTickets);
 
-    List<EventEntity> findAllByStatusAndCreatedAtBefore(InfraEventStatus status, ZonedDateTime now);
+    List<EventEntity> findAllByStatusAndEventDateBefore(InfraEventStatus status, ZonedDateTime now);
 }

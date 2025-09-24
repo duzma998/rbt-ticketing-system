@@ -1,5 +1,7 @@
 package com.nikolastojanovic.rbtticketingsystem.domain.service;
 
+import com.nikolastojanovic.rbtticketingsystem.domain.exception.Error;
+import com.nikolastojanovic.rbtticketingsystem.domain.exception.TicketingException;
 import com.nikolastojanovic.rbtticketingsystem.domain.in.EventService;
 import com.nikolastojanovic.rbtticketingsystem.domain.in.TicketService;
 import com.nikolastojanovic.rbtticketingsystem.domain.in.UserService;
@@ -12,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -35,6 +38,10 @@ public class DomainEventService implements EventService {
     @Override
     public Event createEvent(@NonNull EventRequest request) {
         var creator = userService.getUserByUsername(request.username());
+
+        if(request.eventDate().isBefore(ZonedDateTime.now())) {
+            throw new TicketingException(Error.BAD_REQUEST, "Event cannot be created in the past.");
+        }
 
         var event = buildEventFromRequest(request)
                 .createdBy(request.username())

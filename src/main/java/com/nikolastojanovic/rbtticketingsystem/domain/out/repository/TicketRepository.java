@@ -1,7 +1,6 @@
 package com.nikolastojanovic.rbtticketingsystem.domain.out.repository;
 
 import com.nikolastojanovic.rbtticketingsystem.domain.model.Ticket;
-import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.TicketStatus;
 import lombok.NonNull;
 
 import java.util.List;
@@ -11,9 +10,13 @@ public interface TicketRepository {
 
     void saveTickets(@NonNull List<Ticket> tickets,@NonNull Long eventId,@NonNull Long userId);
 
-    Optional<Ticket> getByEvetIdAndSeat(@NonNull Long eventId, @NonNull String seatNumber);
+    Optional<Ticket> getByEventIdAndSeat(@NonNull Long eventId, @NonNull String seatNumber);
 
-    List<Ticket> getByEvetId(@NonNull Long eventId);
+    List<Ticket> getByEventId(@NonNull Long eventId);
 
     void saveTicket(@NonNull Ticket updatedTicket);
+
+    boolean isSeatAvailable(Long eventId, String seat);
+
+    Optional<Ticket> getByTicketCode(@NonNull String ticketCode);
 }

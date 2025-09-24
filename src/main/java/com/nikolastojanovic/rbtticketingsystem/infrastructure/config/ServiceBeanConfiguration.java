@@ -30,8 +30,8 @@ public class ServiceBeanConfiguration {
     }
 
     @Bean
-    public TicketService ticketService(TicketRepository ticketRepository) {
-        return new DomainTicketService(ticketRepository);
+    public TicketService ticketService(TicketRepository ticketRepository, EventRepository eventRepository) {
+        return new DomainTicketService(ticketRepository, eventRepository);
     }
 
     @Bean

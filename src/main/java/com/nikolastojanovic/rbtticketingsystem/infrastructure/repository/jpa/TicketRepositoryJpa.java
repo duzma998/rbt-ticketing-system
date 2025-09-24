@@ -1,7 +1,5 @@
 package com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.jpa;
 
-import com.nikolastojanovic.rbtticketingsystem.domain.model.Ticket;
-import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.TicketStatus;
 import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.entity.TicketEntity;
 import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.enums.InfraTicketStatus;
 import lombok.NonNull;
@@ -16,4 +14,8 @@ public interface TicketRepositoryJpa extends JpaRepository<TicketEntity, Long> {
     Optional<TicketEntity> findByEventIdAndSeatNumber(Long eventId, String seatNumber);
 
     List<TicketEntity> findByEventIdAndStatusIn(@NonNull Long eventId, @NonNull List<InfraTicketStatus> status);
+
+    Boolean existsByEventIdAndSeatNumberAndStatus(@NonNull Long eventId, @NonNull String seatNumber, InfraTicketStatus status);
+
+    Optional<TicketEntity> findByTicketCode(@NonNull String ticketCode);
 }

@@ -3,7 +3,6 @@ package com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.implem
 import com.nikolastojanovic.rbtticketingsystem.domain.exception.TicketingException;
 import com.nikolastojanovic.rbtticketingsystem.domain.exception.Error;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.Ticket;
-import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.TicketStatus;
 import com.nikolastojanovic.rbtticketingsystem.domain.out.repository.TicketRepository;
 import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.enums.InfraTicketStatus;
 import com.nikolastojanovic.rbtticketingsystem.infrastructure.repository.jpa.EventRepositoryJpa;
@@ -15,7 +14,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +28,7 @@ public class TicketRepositoryImpl implements TicketRepository {
     private final OrderRepositoryJpa orderRepositoryJpa;
 
     @Override
-    public void saveTickets(@NonNull List<Ticket> tickets, @NonNull Long userId, @NonNull Long eventId) {
+    public void saveTickets(@NonNull List<Ticket> tickets, @NonNull Long eventId, @NonNull Long userId ) {
         var event = eventRepositoryJpa.findById(eventId).orElseThrow(() -> new TicketingException(Error.NOT_FOUND, "Event (" + eventId + ") not found on ticket generation."));
         var user = userRepositoryJpa.findById(userId).orElseThrow(() -> new TicketingException(Error.NOT_FOUND, "User (" + userId + ") not found on ticket generation."));
 
@@ -46,12 +44,12 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
-    public Optional<Ticket> getByEvetIdAndSeat(@NonNull Long eventId, @NonNull String seatNumber) {
+    public Optional<Ticket> getByEventIdAndSeat(@NonNull Long eventId, @NonNull String seatNumber) {
         return ticketRepositoryJpa.findByEventIdAndSeatNumber(eventId, seatNumber).map(ticketMapper::toDomain);
     }
 
     @Override
-    public List<Ticket> getByEvetId(@NonNull Long eventId) {
+    public List<Ticket> getByEventId(@NonNull Long eventId) {
         return ticketRepositoryJpa.findByEventId(eventId).stream().map(ticketMapper::toDomain).toList();
     }
 
@@ -71,5 +69,15 @@ public class TicketRepositoryImpl implements TicketRepository {
         entity.setOrder(order);
 
         ticketRepositoryJpa.save(entity);
+    }
+
+    @Override
+    public boolean isSeatAvailable(Long eventId, String seat) {
+        return ticketRepositoryJpa.existsByEventIdAndSeatNumberAndStatus(eventId, seat, InfraTicketStatus.CREATED);
+    }
+
+    @Override
+    public Optional<Ticket> getByTicketCode(@NonNull String ticketCode) {
+        return ticketRepositoryJpa.findByTicketCode(ticketCode).map(ticketMapper::toDomain);
     }
 }

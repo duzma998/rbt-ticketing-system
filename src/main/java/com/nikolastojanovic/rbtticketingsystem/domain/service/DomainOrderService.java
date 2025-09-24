@@ -51,17 +51,27 @@ public class DomainOrderService implements OrderService {
             throw new TicketingException(Error.BAD_REQUEST, "Too many tickets.");
         }
 
-        eventRepository.updateAvailableTickets(request.eventId(),
-                event.availableTickets() - request.ticketCount());
-
         final var savedOrder = orderRepository.saveOrder(order);
+        System.out.println(request.seats());
         if (request.seats() != null) {
+
+            for (var seat : request.seats()) {
+                if (!ticketService.isSeatAvailable(request.eventId(), seat)) {
+                    throw new TicketingException(Error.BAD_REQUEST, "Ticket for seat " + seat + " is already reserved.");
+                }
+            }
+
             request.seats().forEach(s -> ticketService.reserveTicket(request.eventId(), savedOrder.id(), s));
         }
+
         var remainTickets = request.seats() != null ? request.ticketCount() - request.seats().size() : request.ticketCount();
+
         for (int i = 0; i < remainTickets; i++) {
             ticketService.reserveTicket(request.eventId(), savedOrder.id(), null);
         }
+
+        eventRepository.updateAvailableTickets(request.eventId(),
+                event.availableTickets() - request.ticketCount());
 
         return order;
     }

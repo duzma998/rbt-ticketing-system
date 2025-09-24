@@ -33,7 +33,7 @@ public class EventSchedulerService {
         try {
             ZonedDateTime now = ZonedDateTime.now();
 
-            List<EventEntity> expiredEvents = eventRepository.findAllByStatusAndCreatedAtBefore(InfraEventStatus.ACTIVE, now );
+            List<EventEntity> expiredEvents = eventRepository.findAllByStatusAndEventDateBefore(InfraEventStatus.ACTIVE, now );
 
             log.info("Found {} expired events to process", expiredEvents.size());
 

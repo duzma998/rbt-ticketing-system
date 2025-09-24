@@ -3,11 +3,13 @@ package com.nikolastojanovic.rbtticketingsystem.application.exception;
 import com.nikolastojanovic.rbtticketingsystem.application.constants.StringConstants;
 import com.nikolastojanovic.rbtticketingsystem.application.model.response.ValidationErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -57,8 +59,8 @@ public class GlobalExceptionHandler {
                 .getFieldErrors()
                 .stream()
                 .collect(Collectors.toMap(
-                        error -> error.getField(),
-                        error -> error.getDefaultMessage(),
+                        FieldError::getField,
+                        DefaultMessageSourceResolvable::getDefaultMessage,
                         (existing, replacement) -> existing
                 ));
 
@@ -94,8 +96,6 @@ public class GlobalExceptionHandler {
 
         return createResponseEntity(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    // Helper methods for consistency and maintainability
 
     private void logError(String errorType, String message) {
         log.error("{}: {}", errorType, message);
