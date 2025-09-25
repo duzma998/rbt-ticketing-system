@@ -54,7 +54,7 @@ docker-compose up -d
 - `USER`
 
 ### Test admin
-- Username: `testadmin`
+- Username: `system`
 - Password: **provided in email**
 
 #### User Registration
