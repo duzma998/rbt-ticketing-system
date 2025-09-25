@@ -25,8 +25,8 @@ public class ServiceBeanConfiguration {
     }
 
     @Bean
-    public EventService eventService(EventRepository eventRepository, UserService userService, TicketService ticketService) {
-        return new DomainEventService(eventRepository, userService, ticketService);
+    public EventService eventService(EventRepository eventRepository, UserService userService, TicketService ticketService, TicketRepository ticketRepository) {
+        return new DomainEventService(eventRepository, userService, ticketService,ticketRepository);
     }
 
     @Bean

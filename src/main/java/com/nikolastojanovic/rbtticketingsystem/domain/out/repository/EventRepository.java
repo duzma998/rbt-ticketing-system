@@ -18,8 +18,6 @@ public interface EventRepository {
 
     Event saveEvent(@NonNull Event event);
 
-    void deleteEvent(@NonNull Long eventId);
-
     Event updateEvent(@NonNull Event event);
 
     void updateAvailableTickets(@NonNull Long eventId, @NonNull Integer newAvailableTickets);

@@ -30,7 +30,7 @@ public class ApplicationEventMapper {
         );
     }
 
-    public EventRequest toDomain(@NotNull ApplicationEventRequest request, @NotNull String principal) {
+    public EventRequest toRequest(@NotNull ApplicationEventRequest request, @NotNull String principal) {
         return new EventRequest(
                 request.name(),
                 request.description(),

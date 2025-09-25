@@ -55,9 +55,9 @@ public class EventController {
     }
 
     @SecurityRequirement(name = "BearerAuth")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<EventResponse> deleteEvent(@PathVariable @NonNull Long id) {
-        applicationEventService.deleteEvent(id);
+    @PostMapping("/{id}/cancel")
+    public ResponseEntity<EventResponse> cancelEvent(@PathVariable @NonNull Long id) {
+        applicationEventService.cancelEvent(id);
 
         return ResponseEntity.noContent().build();
     }

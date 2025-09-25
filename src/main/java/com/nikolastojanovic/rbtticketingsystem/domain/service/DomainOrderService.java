@@ -7,6 +7,7 @@ import com.nikolastojanovic.rbtticketingsystem.domain.in.TicketService;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.Event;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.Order;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.User;
+import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.EventStatus;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.OrderStatus;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.request.OrderRequest;
 import com.nikolastojanovic.rbtticketingsystem.domain.out.repository.EventRepository;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 @Slf4j
@@ -34,6 +36,10 @@ public class DomainOrderService implements OrderService {
         var user = userRepository.getByUsernameOrThrow(request.username());
         var event = eventRepository.getEvent(request.eventId());
         var order = createNewOrder(request, user, event);
+
+        if(event.status() == EventStatus.CANCELLED) {
+            throw new TicketingException(Error.BAD_REQUEST, "Event has been cancelled.");
+        }
 
         if(event.eventDate().isBefore(ZonedDateTime.now())) {
             throw new TicketingException(Error.BAD_REQUEST, "Event has already passed.");
@@ -73,7 +79,7 @@ public class DomainOrderService implements OrderService {
         eventRepository.updateAvailableTickets(request.eventId(),
                 event.availableTickets() - request.ticketCount());
 
-        return order;
+        return savedOrder;
     }
 
     private Order createNewOrder(OrderRequest request, User user, Event event) {
@@ -81,7 +87,7 @@ public class DomainOrderService implements OrderService {
                 .userId(user.Id())
                 .eventId(event.id())
                 .ticketCount(request.ticketCount())
-                .totalAmount(event.ticketPrice() * request.ticketCount())
+                .totalAmount(event.ticketPrice().multiply(BigDecimal.valueOf(request.ticketCount())))
                 .status(OrderStatus.ACTIVE)
                 .orderMethod(request.orderMethod())
                 .createdAt(ZonedDateTime.now())

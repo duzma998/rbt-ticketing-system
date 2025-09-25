@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class OrderEntity {
     @Column(name = "total_amount", nullable = false)
     @NotNull(message = "Total amount is required")
     @DecimalMin(value = "0.0", inclusive = true, message = "Total amount must be zero or positive")
-    Double totalAmount;
+    BigDecimal totalAmount;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 50)

@@ -60,13 +60,13 @@ public class TicketRepositoryImpl implements TicketRepository {
                 () -> new TicketingException(Error.NOT_FOUND, "Event (" + updatedTicket.eventId() + ") not found on ticket update."));
         var user = userRepositoryJpa.findById(updatedTicket.userId()).orElseThrow(
                 () -> new TicketingException(Error.NOT_FOUND, "User (" + updatedTicket.userId() + ") not found on ticket update."));
-        var order = orderRepositoryJpa.findById(updatedTicket.orderId()).orElseThrow(
-                () -> new TicketingException(Error.NOT_FOUND, "Order (" + updatedTicket.orderId() + ") not found on ticket update."));
+        var order = Optional.ofNullable(updatedTicket.orderId()).flatMap(orderRepositoryJpa::findById);
 
         var entity = ticketMapper.toEntity(updatedTicket);
         entity.setUser(user);
         entity.setEvent(event);
-        entity.setOrder(order);
+
+        order.ifPresent(entity::setOrder);
 
         ticketRepositoryJpa.save(entity);
     }

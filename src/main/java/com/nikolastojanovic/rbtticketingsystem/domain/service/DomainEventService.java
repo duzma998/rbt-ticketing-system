@@ -8,8 +8,11 @@ import com.nikolastojanovic.rbtticketingsystem.domain.in.UserService;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.Event;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.common.Page;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.common.PageResult;
+import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.EventStatus;
+import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.TicketStatus;
 import com.nikolastojanovic.rbtticketingsystem.domain.model.request.EventRequest;
 import com.nikolastojanovic.rbtticketingsystem.domain.out.repository.EventRepository;
+import com.nikolastojanovic.rbtticketingsystem.domain.out.repository.TicketRepository;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,7 @@ public class DomainEventService implements EventService {
     private final EventRepository eventRepository;
     private final UserService userService;
     private final TicketService ticketService;
+    private final TicketRepository ticketRepository;
 
     @Override
     public PageResult<Event> getEvents(@NonNull Page page) {
@@ -73,8 +77,18 @@ public class DomainEventService implements EventService {
     }
 
     @Override
-    public void deleteEvent(@NonNull Long eventId) {
-        eventRepository.deleteEvent(eventId);
+    public void cancelEvent(@NonNull Long id) {
+        var event = eventRepository.getEvent(id);
+        var tickets = ticketService.getTicketsByEventId(id);
+
+        eventRepository.updateEvent(event.withStatus(EventStatus.CANCELLED));
+
+        if(tickets != null && !tickets.isEmpty()) {
+            for(var ticket : tickets) {
+                ticketRepository.saveTicket(ticket.withStatus(TicketStatus.CANCELLED));
+            }
+        }
+
     }
 
     private Event.EventBuilder buildEventFromRequest(EventRequest request) {

@@ -52,11 +52,6 @@ public class EventRepositoryImpl implements EventRepository {
     }
 
     @Override
-    public void deleteEvent(@NonNull Long eventId) {
-        eventRepositoryJpa.deleteById(eventId);
-    }
-
-    @Override
     public Event updateEvent(@NonNull Event event) {
 
         var creatorEntity = userRepositoryJpa.findById(event.creatorId()).orElseThrow(() -> new TicketingException(Error.NOT_FOUND, "Creator not found."));

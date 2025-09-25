@@ -1,7 +1,10 @@
 package com.nikolastojanovic.rbtticketingsystem.domain.in;
 
 import com.nikolastojanovic.rbtticketingsystem.domain.model.Event;
+import com.nikolastojanovic.rbtticketingsystem.domain.model.Ticket;
 import lombok.NonNull;
+
+import java.util.List;
 
 public interface TicketService {
 
@@ -14,4 +17,8 @@ public interface TicketService {
     boolean isTicketValid(String ticketCode);
 
     void cancelTicket(@NonNull String ticketCode);
+
+    List<Ticket> getTicketsByEventId(@NonNull Long eventId);
+
+    void useTicket(@NonNull String ticketCode);
 }

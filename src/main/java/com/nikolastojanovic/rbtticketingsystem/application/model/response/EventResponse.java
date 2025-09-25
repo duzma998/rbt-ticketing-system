@@ -2,6 +2,7 @@ package com.nikolastojanovic.rbtticketingsystem.application.model.response;
 
 import com.nikolastojanovic.rbtticketingsystem.domain.model.enums.EventStatus;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 public record EventResponse(
@@ -15,7 +16,7 @@ public record EventResponse(
         Integer totalTickets,
         Integer availableTickets,
         Integer maxTicketsPerPurchase,
-        Double ticketPrice,
+        BigDecimal ticketPrice,
         EventStatus status,
         String createdBy,
         ZonedDateTime createdAt,

@@ -12,7 +12,7 @@ import java.security.Principal;
 @Component
 public class ApplicationOrderMapper {
     public OrderResponse toResponse(Order order) {
-        return null;
+        return new OrderResponse(order.id(), order.userId(), order.eventId(), order.ticketCount(), order.totalAmount(), order.status());
     }
 
     public OrderRequest toRequest(ApplicationOrderRequest request, String principal, OrderMethod orderMethod) {

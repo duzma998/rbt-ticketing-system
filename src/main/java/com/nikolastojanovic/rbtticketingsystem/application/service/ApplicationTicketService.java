@@ -18,4 +18,8 @@ public class ApplicationTicketService {
     public void cancelTicket(@NonNull String ticketCode) {
         ticketService.cancelTicket(ticketCode);
     }
+
+    public void useTicket(@NonNull String ticketCode) {
+        ticketService.useTicket(ticketCode);
+    }
 }

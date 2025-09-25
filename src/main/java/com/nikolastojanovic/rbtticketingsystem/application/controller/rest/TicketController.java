@@ -26,4 +26,10 @@ public class TicketController {
         ticketService.cancelTicket(ticketCode);
         return  ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{ticketCode}/use")
+    public ResponseEntity<Void> useTicket(@NonNull @PathVariable String ticketCode) {
+        ticketService.useTicket(ticketCode);
+        return  ResponseEntity.noContent().build();
+    }
 }

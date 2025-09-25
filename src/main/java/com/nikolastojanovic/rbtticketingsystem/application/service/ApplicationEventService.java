@@ -37,20 +37,20 @@ public class ApplicationEventService {
 
     @Transactional
     public EventResponse createEvent(@NonNull ApplicationEventRequest eventRequest, String principal) {
-        var event = eventMapper.toDomain(eventRequest, principal);
+        var event = eventMapper.toRequest(eventRequest, principal);
         var savedEvent = eventService.createEvent(event);
         return eventMapper.toResponse(savedEvent);
     }
 
     @Transactional
     public EventResponse updateEvent(@NonNull Long id, @NonNull ApplicationEventRequest eventRequest, String principal) {
-        var event = eventMapper.toDomain(eventRequest, principal);
+        var event = eventMapper.toRequest(eventRequest, principal);
         var updatedEvent = eventService.updateEvent(id, event);
         return eventMapper.toResponse(updatedEvent);
     }
 
     @Transactional
-    public void deleteEvent(@NonNull Long id) {
-        eventService.deleteEvent(id);
+    public void cancelEvent(@NonNull Long id) {
+        eventService.cancelEvent(id);
     }
 }

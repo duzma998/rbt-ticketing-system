@@ -2,6 +2,8 @@ package com.nikolastojanovic.rbtticketingsystem.application.model.request;
 
 import lombok.Builder;
 import jakarta.validation.constraints.*;
+
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 @Builder
@@ -34,5 +36,5 @@ public record ApplicationEventRequest(
 
         @NotNull(message = "Ticket price is required")
         @DecimalMin(value = "0.0", message = "Ticket price must be zero or positive")
-        Double ticketPrice
+        BigDecimal ticketPrice
 ) {}

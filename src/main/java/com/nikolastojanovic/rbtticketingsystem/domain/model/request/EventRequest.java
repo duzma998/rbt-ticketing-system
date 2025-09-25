@@ -1,5 +1,6 @@
 package com.nikolastojanovic.rbtticketingsystem.domain.model.request;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 public record EventRequest(
@@ -12,6 +13,6 @@ public record EventRequest(
         Integer totalTickets,
         Integer availableTickets,
         Integer maxTicketsPerPurchase,
-        Double ticketPrice,
+        BigDecimal ticketPrice,
         String username
 ) {}

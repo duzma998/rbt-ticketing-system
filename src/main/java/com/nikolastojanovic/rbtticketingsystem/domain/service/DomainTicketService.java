@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.nikolastojanovic.rbtticketingsystem.domain.util.CodeGenerator.generateTicketCode;
 
@@ -85,6 +86,27 @@ public class DomainTicketService implements TicketService {
         ticketRepository.saveTickets(listOfTicket, ticket.eventId(), ticket.userId());
 
         eventRepository.updateAvailableTickets(ticket.eventId(), event.availableTickets() + 1);
+    }
+
+    @Override
+    public List<Ticket> getTicketsByEventId(@NonNull Long eventId) {
+        return ticketRepository.getByEventId(eventId);
+    }
+
+    @Override
+    public void useTicket(@NonNull String ticketCode) {
+
+        var ticket = ticketRepository.getByTicketCode(ticketCode).orElseThrow(() -> new TicketingException(Error.NOT_FOUND, "Ticket not found."));
+
+        switch (ticket.status()) {
+            case USED -> throw new TicketingException(Error.BAD_REQUEST, "Ticket has already been used.");
+            case EXPIRED -> throw new TicketingException(Error.BAD_REQUEST, "Ticket has already been expired.");
+            case CANCELLED -> throw new TicketingException(Error.BAD_REQUEST, "Ticket has already been cancelled.");
+            case CREATED ->
+                    throw new TicketingException(Error.BAD_REQUEST, "Cannot use ticket before it has been reserved.");
+            case RESERVED -> ticketRepository.saveTicket(ticket.withStatus(TicketStatus.USED));
+            default -> throw new TicketingException(Error.BAD_REQUEST, "Unknown ticket status: " + ticket.status());
+        }
     }
 
     private Ticket createNewTicket(Event event, String seatNumber) {

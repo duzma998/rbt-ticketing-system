@@ -16,5 +16,5 @@ public interface EventService {
 
     Event updateEvent(@NonNull Long eventId, @NonNull EventRequest event);
 
-    void deleteEvent(@NonNull Long eventId);
+    void cancelEvent(@NonNull Long id);
 }
