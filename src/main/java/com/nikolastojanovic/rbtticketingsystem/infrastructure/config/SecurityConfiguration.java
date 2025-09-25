@@ -38,7 +38,6 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/api/v1/events").permitAll()
                         // todo: implement role based access on other routes
                         .requestMatchers(HttpMethod.POST, "/api/v1/events").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/events/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/events/**").hasRole("ADMIN")
                         .requestMatchers("/swagger-ui/**",
                                 "/swagger-ui.html",

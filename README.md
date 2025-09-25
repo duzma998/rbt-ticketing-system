@@ -134,9 +134,9 @@ Content-Type: application/json
 }
 ```
 
-#### Delete Event (Requires ADMIN Role)
+#### Cancel Event (Requires ADMIN Role)
 ```http
-DELETE /api/v1/events/{id}
+POST /api/v1/events/{id}/cancel
 Authorization: Bearer <your-jwt-token>
 ```
 
@@ -165,6 +165,26 @@ Send JSON message to Kafka topic `RESERVE_TICKETS`:
   "ticketCount": 2,
   "seats": ["1", "2"]
 }
+```
+
+### Ticket Management
+
+#### Use Ticket
+```http
+POST /api/v1/tickets/{ticketCode}/use
+Authorization: Bearer <your-jwt-token>
+```
+
+#### Validate Ticket
+```http
+POST /api/v1/tickets/{ticketCode}/validate
+Authorization: Bearer <your-jwt-token>
+```
+
+#### Cancel Ticket
+```http
+POST /api/v1/tickets/{ticketCode}/cancel
+Authorization: Bearer <your-jwt-token>
 ```
 
 ## Authentication Flow
